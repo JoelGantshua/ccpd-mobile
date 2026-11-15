@@ -1,0 +1,107 @@
+
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+    UnauthorizedException,
+
+  } from '@nestjs/common';
+  import { hashEmailToken } from './security/email-token.js';
+  
+  import { PrismaService } from '../prisma/prisma.service.js';
+  
+  import {
+    generateEmailVerificationToken,
+  } from './security/email-token.js';
+  
+  @Injectable()
+  export class EmailVerificationService {
+    constructor(
+      private readonly prisma: PrismaService,
+    ) {}
+  
+    // Usage interne uniquement.
+    // Le jeton brut sera transmis au service d'envoi d'e-mails.
+    // Il ne doit jamais être exposé dans une réponse publique.
+    
+async consumeToken(token: string): Promise<{ verified: true }> {
+    if (
+      typeof token !== 'string' ||
+      !/^[a-f0-9]{64}$/.test(token)
+    ) {
+      throw new BadRequestException('Jeton invalide');
+    }
+  
+    const tokenHash = hashEmailToken(token);
+  
+    const result = await this.prisma.$queryRaw<
+      Array<{ id: string }>
+    >`
+      WITH consumed AS (
+        UPDATE "EmailVerificationToken" AS t
+        SET "consumedAt" = CURRENT_TIMESTAMP
+        WHERE t."tokenHash" = ${tokenHash}
+          AND t."consumedAt" IS NULL
+          AND t."expiresAt" > CURRENT_TIMESTAMP
+          AND EXISTS (
+            SELECT 1 FROM "User" AS u
+            WHERE u."id" = t."userId"
+              AND u."emailVerifiedAt" IS NULL
+          )
+        RETURNING t."userId"
+      )
+      UPDATE "User" AS u
+      SET
+        "emailVerifiedAt" = CURRENT_TIMESTAMP,
+        "updatedAt" = CURRENT_TIMESTAMP
+      FROM consumed
+      WHERE u."id" = consumed."userId"
+        AND u."emailVerifiedAt" IS NULL
+      RETURNING u."id"::text AS id
+    `;
+  
+    if (result.length !== 1) {
+      throw new UnauthorizedException(
+        'Jeton invalide, expiré ou déjà utilisé',
+      );
+    }
+  
+    return { verified: true };
+  }
+  
+    async issueToken(userId: string) {
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          emailVerifiedAt: true,
+        },
+      });
+  
+      if (!user) {
+        throw new NotFoundException('Utilisateur introuvable');
+      }
+  
+      if (user.emailVerifiedAt) {
+        throw new BadRequestException(
+          'Adresse e-mail déjà vérifiée',
+        );
+      }
+  
+      const generated = generateEmailVerificationToken();
+  
+      await this.prisma.emailVerificationToken.create({
+        data: {
+          userId: user.id,
+          tokenHash: generated.tokenHash,
+          expiresAt: generated.expiresAt,
+        },
+      });
+  
+      return {
+        token: generated.token,
+        expiresAt: generated.expiresAt,
+      };
+    }
+  }
+  

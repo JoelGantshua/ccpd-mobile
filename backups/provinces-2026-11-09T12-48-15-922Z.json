@@ -1,0 +1,158 @@
+[
+  {
+    "id": "c5e64c51-5bfa-4d2b-98bf-0ee917c951f8",
+    "name": "Bas-Uele",
+    "createdAt": "2026-11-09T12:38:06.459Z",
+    "updatedAt": "2026-11-09T12:38:06.459Z"
+  },
+  {
+    "id": "1d7bd739-dbe5-4e40-a3ea-ba5a76b4f3e9",
+    "name": "Haut-Katanga",
+    "createdAt": "2026-11-09T12:38:09.283Z",
+    "updatedAt": "2026-11-09T12:38:09.283Z"
+  },
+  {
+    "id": "1d51ebb4-e7a8-4a43-8dc4-e82d26fe20ef",
+    "name": "Haut-Lomami",
+    "createdAt": "2026-11-09T12:38:10.703Z",
+    "updatedAt": "2026-11-09T12:38:10.703Z"
+  },
+  {
+    "id": "16e266cc-240e-4b41-b4db-25225c868204",
+    "name": "Haut-Uele",
+    "createdAt": "2026-11-09T12:38:12.122Z",
+    "updatedAt": "2026-11-09T12:38:12.122Z"
+  },
+  {
+    "id": "a0e0aeb6-9bfa-4e9e-8064-9dffb96a288d",
+    "name": "Ituri",
+    "createdAt": "2026-11-09T12:38:13.542Z",
+    "updatedAt": "2026-11-09T12:38:13.542Z"
+  },
+  {
+    "id": "73cf2542-6bd3-48a8-bdc6-81af0aa62c9a",
+    "name": "Kasaï",
+    "createdAt": "2026-11-09T12:38:14.959Z",
+    "updatedAt": "2026-11-09T12:38:14.959Z"
+  },
+  {
+    "id": "b51bce98-7b82-461e-a640-13a294d0a1dd",
+    "name": "Kasaï-Central",
+    "createdAt": "2026-11-09T12:38:16.362Z",
+    "updatedAt": "2026-11-09T12:38:16.362Z"
+  },
+  {
+    "id": "8ed46807-14a3-4524-b434-dd96e1856e2f",
+    "name": "Kasaï-Oriental",
+    "createdAt": "2026-11-09T12:38:17.771Z",
+    "updatedAt": "2026-11-09T12:38:17.771Z"
+  },
+  {
+    "id": "8c8fbca1-5a39-4cc6-9b8c-a29dceaf28f9",
+    "name": "Kinshasa",
+    "createdAt": "2026-11-09T12:38:19.214Z",
+    "updatedAt": "2026-11-09T12:38:19.214Z"
+  },
+  {
+    "id": "66da6892-d98f-4bd7-adc2-7661abd9cd17",
+    "name": "Kongo-Central",
+    "createdAt": "2026-11-09T12:38:20.626Z",
+    "updatedAt": "2026-11-09T12:38:20.626Z"
+  },
+  {
+    "id": "c7562c5a-8f7b-470a-822c-3f7ebd1b4160",
+    "name": "Kwango",
+    "createdAt": "2026-11-09T12:38:22.046Z",
+    "updatedAt": "2026-11-09T12:38:22.046Z"
+  },
+  {
+    "id": "b392700c-ee1c-46a3-be06-41430fe5fa5d",
+    "name": "Kwilu",
+    "createdAt": "2026-11-09T12:38:23.445Z",
+    "updatedAt": "2026-11-09T12:38:23.445Z"
+  },
+  {
+    "id": "4b4dc838-e44b-4968-81d1-5de6e77c8f7b",
+    "name": "Lomami",
+    "createdAt": "2026-11-09T12:38:24.841Z",
+    "updatedAt": "2026-11-09T12:38:24.841Z"
+  },
+  {
+    "id": "0b15c4bf-e7bb-4e72-b7f6-733f5fc4eb76",
+    "name": "Lualaba",
+    "createdAt": "2026-11-09T12:38:26.263Z",
+    "updatedAt": "2026-11-09T12:38:26.263Z"
+  },
+  {
+    "id": "2ccbe3e7-7561-4099-933f-e4ccc3b0f6aa",
+    "name": "Mai-Ndombe",
+    "createdAt": "2026-11-09T12:38:27.674Z",
+    "updatedAt": "2026-11-09T12:38:27.674Z"
+  },
+  {
+    "id": "3cf95f71-c0e5-4499-b05a-17c96cd7bb72",
+    "name": "Maniema",
+    "createdAt": "2026-11-09T12:38:29.149Z",
+    "updatedAt": "2026-11-09T12:38:29.149Z"
+  },
+  {
+    "id": "d5f38bec-2f3a-4596-90b7-c8266889458a",
+    "name": "Mongala",
+    "createdAt": "2026-11-09T12:38:30.561Z",
+    "updatedAt": "2026-11-09T12:38:30.561Z"
+  },
+  {
+    "id": "098261de-18b6-4f53-aace-60c1b530ad99",
+    "name": "Nord-Kivu",
+    "createdAt": "2026-11-09T12:38:31.993Z",
+    "updatedAt": "2026-11-09T12:38:31.993Z"
+  },
+  {
+    "id": "ef690adb-766c-4753-a229-0ace79fd90c4",
+    "name": "Nord-Ubangi",
+    "createdAt": "2026-11-09T12:38:33.788Z",
+    "updatedAt": "2026-11-09T12:38:33.788Z"
+  },
+  {
+    "id": "e3cd6553-79d9-4a0f-8787-4c58cab045b6",
+    "name": "Sankuru",
+    "createdAt": "2026-11-09T12:38:44.935Z",
+    "updatedAt": "2026-11-09T12:38:44.935Z"
+  },
+  {
+    "id": "9fe5514e-9e3a-44b0-8a4c-db47b40343bd",
+    "name": "Sud-Kivu",
+    "createdAt": "2026-11-09T12:38:46.371Z",
+    "updatedAt": "2026-11-09T12:38:46.371Z"
+  },
+  {
+    "id": "e0fba665-10b8-4fb4-8615-b714e62d4a9d",
+    "name": "Sud-Ubangi",
+    "createdAt": "2026-11-09T12:38:47.807Z",
+    "updatedAt": "2026-11-09T12:38:47.807Z"
+  },
+  {
+    "id": "9deaa7fc-29ad-4dfb-bc33-f4dbf914a705",
+    "name": "Tanganyika",
+    "createdAt": "2026-11-09T12:38:49.258Z",
+    "updatedAt": "2026-11-09T12:38:49.258Z"
+  },
+  {
+    "id": "1f1a81f9-2939-4c1e-8a4b-329d59282672",
+    "name": "Tshopo",
+    "createdAt": "2026-11-09T12:38:50.726Z",
+    "updatedAt": "2026-11-09T12:38:50.726Z"
+  },
+  {
+    "id": "a44e2c23-52ab-4e3e-aa8c-a7d8314b6d31",
+    "name": "Tshuapa",
+    "createdAt": "2026-11-09T12:38:52.154Z",
+    "updatedAt": "2026-11-09T12:38:52.154Z"
+  },
+  {
+    "id": "718c56a2-2748-4db3-9a10-32d61ae601b4",
+    "name": "Équateur",
+    "createdAt": "2026-11-09T12:38:07.878Z",
+    "updatedAt": "2026-11-09T12:38:07.878Z"
+  }
+]

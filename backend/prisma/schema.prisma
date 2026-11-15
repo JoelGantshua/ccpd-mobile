@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Province {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+}
+
+enum UserRole {
+  ADMIN
+  RESPONSABLE_PROVINCIAL
+  MEMBRE
+}
+
+model User {
+  id           String   @id @default(uuid())
+  fullName     String
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(MEMBRE)
+  isActive     Boolean  @default(true)
+
+  provinceId String?
+  province   Province? @relation(fields: [provinceId], references: [id])
+
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  emailVerifiedAt    DateTime?
+  verificationTokens EmailVerificationToken[]
+  sessions           RefreshSession[]
+}
+
+model EmailVerificationToken {
+  id         String    @id @default(uuid())
+  tokenHash  String    @unique
+  userId     String    @unique
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([expiresAt])
+}
+
+model RefreshSession {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+enum OpinionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Opinion {
+  id            String        @id @default(uuid())
+  authorName    String?
+  isAnonymous   Boolean       @default(false)
+  content       String
+  status        OpinionStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  publicationId String?
+  publication   Publication?  @relation(fields: [publicationId], references: [id], onDelete: Restrict)
+
+  @@index([status, createdAt])
+}
+
+enum PublicationType {
+  DOCUMENT
+  DOCTRINE
+}
+
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Publication {
+  id          String            @id @default(uuid())
+  title       String
+  description String?
+  type        PublicationType
+  status      PublicationStatus @default(DRAFT)
+
+doctrineNumber  Int?
+doctrineVersion String?
+
+
+  fileName   String?
+  storageKey String?
+  mimeType   String?
+  fileSize   Int?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+
+  opinions Opinion[]
+
+  @@index([type, status, publishedAt])
+@@index([doctrineNumber, doctrineVersion])
+}

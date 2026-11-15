@@ -1,0 +1,10 @@
+import * as Prisma from './internal/prismaNamespaceBrowser.js';
+export { Prisma };
+export * as $Enums from './enums.js';
+export * from './enums.js';
+export type Province = Prisma.ProvinceModel;
+export type User = Prisma.UserModel;
+export type EmailVerificationToken = Prisma.EmailVerificationTokenModel;
+export type RefreshSession = Prisma.RefreshSessionModel;
+export type Opinion = Prisma.OpinionModel;
+export type Publication = Prisma.PublicationModel;
