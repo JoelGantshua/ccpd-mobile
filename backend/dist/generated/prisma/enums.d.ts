@@ -21,3 +21,14 @@ export declare const PublicationStatus: {
     readonly ARCHIVED: "ARCHIVED";
 };
 export type PublicationStatus = (typeof PublicationStatus)[keyof typeof PublicationStatus];
+export declare const ParticipationStatus: {
+    readonly PENDING: "PENDING";
+    readonly APPROVED: "APPROVED";
+    readonly REJECTED: "REJECTED";
+};
+export type ParticipationStatus = (typeof ParticipationStatus)[keyof typeof ParticipationStatus];
+export declare const ArticleCategory: {
+    readonly POLITIQUE: "POLITIQUE";
+    readonly ECONOMIE: "ECONOMIE";
+};
+export type ArticleCategory = (typeof ArticleCategory)[keyof typeof ArticleCategory];

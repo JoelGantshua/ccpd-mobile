@@ -8,9 +8,9 @@ export declare class PublicationsService {
         success: boolean;
         items: {
             id: string;
-            type: PublicationType;
             title: string;
             description: string | null;
+            type: PublicationType;
             publishedAt: Date | null;
         }[];
         pagination: {
@@ -24,9 +24,9 @@ export declare class PublicationsService {
         success: boolean;
         publication: {
             id: string;
-            type: PublicationType;
             title: string;
             description: string | null;
+            type: PublicationType;
             publishedAt: Date | null;
         };
     }>;
@@ -36,10 +36,10 @@ export declare class PublicationsService {
         publication: {
             id: string;
             createdAt: Date;
-            type: PublicationType;
+            status: import("../generated/prisma/enums.js").PublicationStatus;
             title: string;
             description: string | null;
-            status: import("../generated/prisma/enums.js").PublicationStatus;
+            type: PublicationType;
         };
     }>;
     attachPdf(id: string, file?: Express.Multer.File): Promise<{
@@ -47,22 +47,30 @@ export declare class PublicationsService {
         message: string;
         publication: {
             id: string;
-            type: PublicationType;
-            title: string;
+            createdAt: Date;
+            updatedAt: Date;
             status: import("../generated/prisma/enums.js").PublicationStatus;
+            title: string;
+            description: string | null;
+            type: PublicationType;
+            doctrineNumber: number | null;
+            doctrineVersion: string | null;
             fileName: string | null;
             fileSize: number | null;
+            publishedAt: Date | null;
         };
     }>;
     getPublishedPdf(id: string): Promise<NonSharedBuffer>;
+    getAdminPdf(id: string): Promise<NonSharedBuffer>;
+    private readPdf;
     publish(id: string): Promise<{
         success: boolean;
         message: string;
         publication: {
             id: string;
-            type: PublicationType;
-            title: string;
             status: import("../generated/prisma/enums.js").PublicationStatus;
+            title: string;
+            type: PublicationType;
             publishedAt: Date | null;
         };
     }>;
@@ -81,5 +89,81 @@ export declare class PublicationsService {
             } | null;
         }[];
         total: number;
+    }>;
+    private readonly adminSelect;
+    private adminMetadata;
+    adminList(type: string, pageInput?: string): Promise<{
+        success: boolean;
+        items: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            status: import("../generated/prisma/enums.js").PublicationStatus;
+            title: string;
+            description: string | null;
+            type: PublicationType;
+            doctrineNumber: number | null;
+            doctrineVersion: string | null;
+            fileName: string | null;
+            fileSize: number | null;
+            publishedAt: Date | null;
+        }[];
+        pagination: {
+            page: number;
+            pageSize: number;
+            total: number;
+            totalPages: number;
+        };
+    }>;
+    adminDetail(id: string): Promise<{
+        success: boolean;
+        publication: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            status: import("../generated/prisma/enums.js").PublicationStatus;
+            title: string;
+            description: string | null;
+            type: PublicationType;
+            doctrineNumber: number | null;
+            doctrineVersion: string | null;
+            fileName: string | null;
+            fileSize: number | null;
+            publishedAt: Date | null;
+        };
+    }>;
+    adminUpdate(id: string, dto: CreatePublicationDto): Promise<{
+        success: boolean;
+        publication: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            status: import("../generated/prisma/enums.js").PublicationStatus;
+            title: string;
+            description: string | null;
+            type: PublicationType;
+            doctrineNumber: number | null;
+            doctrineVersion: string | null;
+            fileName: string | null;
+            fileSize: number | null;
+            publishedAt: Date | null;
+        };
+    }>;
+    adminStatus(id: string, status: 'DRAFT' | 'ARCHIVED'): Promise<{
+        success: boolean;
+        publication: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            status: import("../generated/prisma/enums.js").PublicationStatus;
+            title: string;
+            description: string | null;
+            type: PublicationType;
+            doctrineNumber: number | null;
+            doctrineVersion: string | null;
+            fileName: string | null;
+            fileSize: number | null;
+            publishedAt: Date | null;
+        };
     }>;
 }

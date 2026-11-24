@@ -3,8 +3,16 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type EmailVerificationTokenModel = runtime.Types.Result.DefaultSelection<Prisma.$EmailVerificationTokenPayload>;
 export type AggregateEmailVerificationToken = {
     _count: EmailVerificationTokenCountAggregateOutputType | null;
+    _avg: EmailVerificationTokenAvgAggregateOutputType | null;
+    _sum: EmailVerificationTokenSumAggregateOutputType | null;
     _min: EmailVerificationTokenMinAggregateOutputType | null;
     _max: EmailVerificationTokenMaxAggregateOutputType | null;
+};
+export type EmailVerificationTokenAvgAggregateOutputType = {
+    attempts: number | null;
+};
+export type EmailVerificationTokenSumAggregateOutputType = {
+    attempts: number | null;
 };
 export type EmailVerificationTokenMinAggregateOutputType = {
     id: string | null;
@@ -12,6 +20,7 @@ export type EmailVerificationTokenMinAggregateOutputType = {
     userId: string | null;
     expiresAt: Date | null;
     consumedAt: Date | null;
+    attempts: number | null;
     createdAt: Date | null;
 };
 export type EmailVerificationTokenMaxAggregateOutputType = {
@@ -20,6 +29,7 @@ export type EmailVerificationTokenMaxAggregateOutputType = {
     userId: string | null;
     expiresAt: Date | null;
     consumedAt: Date | null;
+    attempts: number | null;
     createdAt: Date | null;
 };
 export type EmailVerificationTokenCountAggregateOutputType = {
@@ -28,8 +38,15 @@ export type EmailVerificationTokenCountAggregateOutputType = {
     userId: number;
     expiresAt: number;
     consumedAt: number;
+    attempts: number;
     createdAt: number;
     _all: number;
+};
+export type EmailVerificationTokenAvgAggregateInputType = {
+    attempts?: true;
+};
+export type EmailVerificationTokenSumAggregateInputType = {
+    attempts?: true;
 };
 export type EmailVerificationTokenMinAggregateInputType = {
     id?: true;
@@ -37,6 +54,7 @@ export type EmailVerificationTokenMinAggregateInputType = {
     userId?: true;
     expiresAt?: true;
     consumedAt?: true;
+    attempts?: true;
     createdAt?: true;
 };
 export type EmailVerificationTokenMaxAggregateInputType = {
@@ -45,6 +63,7 @@ export type EmailVerificationTokenMaxAggregateInputType = {
     userId?: true;
     expiresAt?: true;
     consumedAt?: true;
+    attempts?: true;
     createdAt?: true;
 };
 export type EmailVerificationTokenCountAggregateInputType = {
@@ -53,6 +72,7 @@ export type EmailVerificationTokenCountAggregateInputType = {
     userId?: true;
     expiresAt?: true;
     consumedAt?: true;
+    attempts?: true;
     createdAt?: true;
     _all?: true;
 };
@@ -63,6 +83,8 @@ export type EmailVerificationTokenAggregateArgs<ExtArgs extends runtime.Types.Ex
     take?: number;
     skip?: number;
     _count?: true | EmailVerificationTokenCountAggregateInputType;
+    _avg?: EmailVerificationTokenAvgAggregateInputType;
+    _sum?: EmailVerificationTokenSumAggregateInputType;
     _min?: EmailVerificationTokenMinAggregateInputType;
     _max?: EmailVerificationTokenMaxAggregateInputType;
 };
@@ -77,6 +99,8 @@ export type EmailVerificationTokenGroupByArgs<ExtArgs extends runtime.Types.Exte
     take?: number;
     skip?: number;
     _count?: EmailVerificationTokenCountAggregateInputType | true;
+    _avg?: EmailVerificationTokenAvgAggregateInputType;
+    _sum?: EmailVerificationTokenSumAggregateInputType;
     _min?: EmailVerificationTokenMinAggregateInputType;
     _max?: EmailVerificationTokenMaxAggregateInputType;
 };
@@ -86,8 +110,11 @@ export type EmailVerificationTokenGroupByOutputType = {
     userId: string;
     expiresAt: Date;
     consumedAt: Date | null;
+    attempts: number;
     createdAt: Date;
     _count: EmailVerificationTokenCountAggregateOutputType | null;
+    _avg: EmailVerificationTokenAvgAggregateOutputType | null;
+    _sum: EmailVerificationTokenSumAggregateOutputType | null;
     _min: EmailVerificationTokenMinAggregateOutputType | null;
     _max: EmailVerificationTokenMaxAggregateOutputType | null;
 };
@@ -103,6 +130,7 @@ export type EmailVerificationTokenWhereInput = {
     userId?: Prisma.StringFilter<"EmailVerificationToken"> | string;
     expiresAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string;
     consumedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null;
+    attempts?: Prisma.IntFilter<"EmailVerificationToken"> | number;
     createdAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 };
@@ -112,6 +140,7 @@ export type EmailVerificationTokenOrderByWithRelationInput = {
     userId?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     consumedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    attempts?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     user?: Prisma.UserOrderByWithRelationInput;
 };
@@ -124,6 +153,7 @@ export type EmailVerificationTokenWhereUniqueInput = Prisma.AtLeast<{
     NOT?: Prisma.EmailVerificationTokenWhereInput | Prisma.EmailVerificationTokenWhereInput[];
     expiresAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string;
     consumedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null;
+    attempts?: Prisma.IntFilter<"EmailVerificationToken"> | number;
     createdAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 }, "id" | "tokenHash" | "userId">;
@@ -133,10 +163,13 @@ export type EmailVerificationTokenOrderByWithAggregationInput = {
     userId?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     consumedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    attempts?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     _count?: Prisma.EmailVerificationTokenCountOrderByAggregateInput;
+    _avg?: Prisma.EmailVerificationTokenAvgOrderByAggregateInput;
     _max?: Prisma.EmailVerificationTokenMaxOrderByAggregateInput;
     _min?: Prisma.EmailVerificationTokenMinOrderByAggregateInput;
+    _sum?: Prisma.EmailVerificationTokenSumOrderByAggregateInput;
 };
 export type EmailVerificationTokenScalarWhereWithAggregatesInput = {
     AND?: Prisma.EmailVerificationTokenScalarWhereWithAggregatesInput | Prisma.EmailVerificationTokenScalarWhereWithAggregatesInput[];
@@ -147,6 +180,7 @@ export type EmailVerificationTokenScalarWhereWithAggregatesInput = {
     userId?: Prisma.StringWithAggregatesFilter<"EmailVerificationToken"> | string;
     expiresAt?: Prisma.DateTimeWithAggregatesFilter<"EmailVerificationToken"> | Date | string;
     consumedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"EmailVerificationToken"> | Date | string | null;
+    attempts?: Prisma.IntWithAggregatesFilter<"EmailVerificationToken"> | number;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"EmailVerificationToken"> | Date | string;
 };
 export type EmailVerificationTokenCreateInput = {
@@ -154,6 +188,7 @@ export type EmailVerificationTokenCreateInput = {
     tokenHash: string;
     expiresAt: Date | string;
     consumedAt?: Date | string | null;
+    attempts?: number;
     createdAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutVerificationTokensInput;
 };
@@ -163,6 +198,7 @@ export type EmailVerificationTokenUncheckedCreateInput = {
     userId: string;
     expiresAt: Date | string;
     consumedAt?: Date | string | null;
+    attempts?: number;
     createdAt?: Date | string;
 };
 export type EmailVerificationTokenUpdateInput = {
@@ -170,6 +206,7 @@ export type EmailVerificationTokenUpdateInput = {
     tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    attempts?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutVerificationTokensNestedInput;
 };
@@ -179,6 +216,7 @@ export type EmailVerificationTokenUncheckedUpdateInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    attempts?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type EmailVerificationTokenCreateManyInput = {
@@ -187,6 +225,7 @@ export type EmailVerificationTokenCreateManyInput = {
     userId: string;
     expiresAt: Date | string;
     consumedAt?: Date | string | null;
+    attempts?: number;
     createdAt?: Date | string;
 };
 export type EmailVerificationTokenUpdateManyMutationInput = {
@@ -194,6 +233,7 @@ export type EmailVerificationTokenUpdateManyMutationInput = {
     tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    attempts?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type EmailVerificationTokenUncheckedUpdateManyInput = {
@@ -202,6 +242,7 @@ export type EmailVerificationTokenUncheckedUpdateManyInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    attempts?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type EmailVerificationTokenListRelationFilter = {
@@ -218,7 +259,11 @@ export type EmailVerificationTokenCountOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     consumedAt?: Prisma.SortOrder;
+    attempts?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
+};
+export type EmailVerificationTokenAvgOrderByAggregateInput = {
+    attempts?: Prisma.SortOrder;
 };
 export type EmailVerificationTokenMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -226,6 +271,7 @@ export type EmailVerificationTokenMaxOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     consumedAt?: Prisma.SortOrder;
+    attempts?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
 export type EmailVerificationTokenMinOrderByAggregateInput = {
@@ -234,7 +280,11 @@ export type EmailVerificationTokenMinOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     consumedAt?: Prisma.SortOrder;
+    attempts?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
+};
+export type EmailVerificationTokenSumOrderByAggregateInput = {
+    attempts?: Prisma.SortOrder;
 };
 export type EmailVerificationTokenCreateNestedManyWithoutUserInput = {
     create?: Prisma.XOR<Prisma.EmailVerificationTokenCreateWithoutUserInput, Prisma.EmailVerificationTokenUncheckedCreateWithoutUserInput> | Prisma.EmailVerificationTokenCreateWithoutUserInput[] | Prisma.EmailVerificationTokenUncheckedCreateWithoutUserInput[];
@@ -274,11 +324,19 @@ export type EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput = {
     updateMany?: Prisma.EmailVerificationTokenUpdateManyWithWhereWithoutUserInput | Prisma.EmailVerificationTokenUpdateManyWithWhereWithoutUserInput[];
     deleteMany?: Prisma.EmailVerificationTokenScalarWhereInput | Prisma.EmailVerificationTokenScalarWhereInput[];
 };
+export type IntFieldUpdateOperationsInput = {
+    set?: number;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
 export type EmailVerificationTokenCreateWithoutUserInput = {
     id?: string;
     tokenHash: string;
     expiresAt: Date | string;
     consumedAt?: Date | string | null;
+    attempts?: number;
     createdAt?: Date | string;
 };
 export type EmailVerificationTokenUncheckedCreateWithoutUserInput = {
@@ -286,6 +344,7 @@ export type EmailVerificationTokenUncheckedCreateWithoutUserInput = {
     tokenHash: string;
     expiresAt: Date | string;
     consumedAt?: Date | string | null;
+    attempts?: number;
     createdAt?: Date | string;
 };
 export type EmailVerificationTokenCreateOrConnectWithoutUserInput = {
@@ -318,6 +377,7 @@ export type EmailVerificationTokenScalarWhereInput = {
     userId?: Prisma.StringFilter<"EmailVerificationToken"> | string;
     expiresAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string;
     consumedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null;
+    attempts?: Prisma.IntFilter<"EmailVerificationToken"> | number;
     createdAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string;
 };
 export type EmailVerificationTokenCreateManyUserInput = {
@@ -325,6 +385,7 @@ export type EmailVerificationTokenCreateManyUserInput = {
     tokenHash: string;
     expiresAt: Date | string;
     consumedAt?: Date | string | null;
+    attempts?: number;
     createdAt?: Date | string;
 };
 export type EmailVerificationTokenUpdateWithoutUserInput = {
@@ -332,6 +393,7 @@ export type EmailVerificationTokenUpdateWithoutUserInput = {
     tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    attempts?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type EmailVerificationTokenUncheckedUpdateWithoutUserInput = {
@@ -339,6 +401,7 @@ export type EmailVerificationTokenUncheckedUpdateWithoutUserInput = {
     tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    attempts?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type EmailVerificationTokenUncheckedUpdateManyWithoutUserInput = {
@@ -346,6 +409,7 @@ export type EmailVerificationTokenUncheckedUpdateManyWithoutUserInput = {
     tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    attempts?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type EmailVerificationTokenSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -354,6 +418,7 @@ export type EmailVerificationTokenSelect<ExtArgs extends runtime.Types.Extension
     userId?: boolean;
     expiresAt?: boolean;
     consumedAt?: boolean;
+    attempts?: boolean;
     createdAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["emailVerificationToken"]>;
@@ -363,6 +428,7 @@ export type EmailVerificationTokenSelectCreateManyAndReturn<ExtArgs extends runt
     userId?: boolean;
     expiresAt?: boolean;
     consumedAt?: boolean;
+    attempts?: boolean;
     createdAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["emailVerificationToken"]>;
@@ -372,6 +438,7 @@ export type EmailVerificationTokenSelectUpdateManyAndReturn<ExtArgs extends runt
     userId?: boolean;
     expiresAt?: boolean;
     consumedAt?: boolean;
+    attempts?: boolean;
     createdAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["emailVerificationToken"]>;
@@ -381,9 +448,10 @@ export type EmailVerificationTokenSelectScalar = {
     userId?: boolean;
     expiresAt?: boolean;
     consumedAt?: boolean;
+    attempts?: boolean;
     createdAt?: boolean;
 };
-export type EmailVerificationTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tokenHash" | "userId" | "expiresAt" | "consumedAt" | "createdAt", ExtArgs["result"]["emailVerificationToken"]>;
+export type EmailVerificationTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tokenHash" | "userId" | "expiresAt" | "consumedAt" | "attempts" | "createdAt", ExtArgs["result"]["emailVerificationToken"]>;
 export type EmailVerificationTokenInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
@@ -404,6 +472,7 @@ export type $EmailVerificationTokenPayload<ExtArgs extends runtime.Types.Extensi
         userId: string;
         expiresAt: Date;
         consumedAt: Date | null;
+        attempts: number;
         createdAt: Date;
     }, ExtArgs["result"]["emailVerificationToken"]>;
     composites: {};
@@ -468,6 +537,7 @@ export interface EmailVerificationTokenFieldRefs {
     readonly userId: Prisma.FieldRef<"EmailVerificationToken", 'String'>;
     readonly expiresAt: Prisma.FieldRef<"EmailVerificationToken", 'DateTime'>;
     readonly consumedAt: Prisma.FieldRef<"EmailVerificationToken", 'DateTime'>;
+    readonly attempts: Prisma.FieldRef<"EmailVerificationToken", 'Int'>;
     readonly createdAt: Prisma.FieldRef<"EmailVerificationToken", 'DateTime'>;
 }
 export type EmailVerificationTokenFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {

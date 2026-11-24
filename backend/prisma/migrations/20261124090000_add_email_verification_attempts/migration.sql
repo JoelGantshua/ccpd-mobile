@@ -1,0 +1,2 @@
+ALTER TABLE "EmailVerificationToken"
+ADD COLUMN IF NOT EXISTS "attempts" INTEGER NOT NULL DEFAULT 0;

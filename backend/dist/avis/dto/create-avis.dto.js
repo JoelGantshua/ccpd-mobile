@@ -7,24 +7,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsBoolean, IsString, MaxLength, MinLength, ValidateIf, } from 'class-validator';
+import { IsBoolean, IsString, IsUUID, MinLength, MaxLength, } from 'class-validator';
+import { Transform } from 'class-transformer';
 export class CreateAvisDto {
+    publicationId;
     isAnonymous;
-    authorName;
     content;
 }
+__decorate([
+    IsUUID('4'),
+    __metadata("design:type", String)
+], CreateAvisDto.prototype, "publicationId", void 0);
 __decorate([
     IsBoolean(),
     __metadata("design:type", Boolean)
 ], CreateAvisDto.prototype, "isAnonymous", void 0);
 __decorate([
-    ValidateIf((dto) => !dto.isAnonymous),
-    IsString(),
-    MinLength(2),
-    MaxLength(120),
-    __metadata("design:type", String)
-], CreateAvisDto.prototype, "authorName", void 0);
-__decorate([
+    Transform(({ value }) => typeof value === 'string' ? value.trim() : value),
     IsString(),
     MinLength(20),
     MaxLength(2000),

@@ -1,16 +1,19 @@
-﻿import {
+import {
   Body,
   Controller,
   HttpCode,
   HttpStatus,
   Post,
+  Req,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 
 import { Throttle } from '@nestjs/throttler';
-
+import { JwtAccessGuard } from '../auth/jwt-access.guard.js';
 import { AvisService } from './avis.service.js';
+import type { AvisAuthor } from './avis.service.js';
 import { CreateAvisDto } from './dto/create-avis.dto.js';
 
 @Controller('avis')
@@ -20,6 +23,7 @@ export class AvisController {
   ) {}
 
   @Post()
+  @UseGuards(JwtAccessGuard)
   @HttpCode(HttpStatus.CREATED)
   @Throttle({
     default: {
@@ -32,7 +36,10 @@ export class AvisController {
     forbidNonWhitelisted: true,
     transform: true,
   }))
-  create(@Body() dto: CreateAvisDto) {
-    return this.avisService.create(dto);
+  create(
+    @Body() dto: CreateAvisDto,
+    @Req() request: { user: AvisAuthor },
+  ) {
+    return this.avisService.create(dto, request.user);
   }
 }

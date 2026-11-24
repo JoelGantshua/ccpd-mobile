@@ -7,40 +7,59 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Injectable, BadRequestException, } from '@nestjs/common';
+import { Injectable, BadRequestException, ForbiddenException, } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 let AvisService = class AvisService {
     prisma;
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async create(dto) {
-        const content = dto.content?.trim();
-        const authorName = dto.authorName?.trim();
-        if (!content || content.length < 20 || content.length > 2000) {
-            throw new BadRequestException('La contribution doit contenir entre 20 et 2000 caractères.');
+    async create(dto, user) {
+        if (!user.provinceId) {
+            throw new ForbiddenException('Votre compte doit etre rattache a une province.');
         }
-        if (!dto.isAnonymous &&
-            (!authorName || authorName.length < 2 || authorName.length > 120)) {
-            throw new BadRequestException('Le nom complet est obligatoire pour un avis non anonyme.');
+        const content = dto.content.trim();
+        if (content.length < 20 || content.length > 2000) {
+            throw new BadRequestException('La contribution doit contenir entre 20 et 2000 caracteres.');
+        }
+        const publication = await this.prisma.publication.findFirst({
+            where: {
+                id: dto.publicationId,
+                status: 'PUBLISHED',
+            },
+            select: {
+                id: true,
+                title: true,
+                type: true,
+                doctrineNumber: true,
+                doctrineVersion: true,
+            },
+        });
+        if (!publication) {
+            throw new BadRequestException('La publication selectionnee est indisponible.');
         }
         const opinion = await this.prisma.opinion.create({
             data: {
                 content,
-                authorName: dto.isAnonymous ? null : authorName,
+                publicationId: publication.id,
                 isAnonymous: dto.isAnonymous,
+                authorName: dto.isAnonymous ? null : user.fullName,
+                authorId: dto.isAnonymous ? null : user.id,
+                provinceId: user.provinceId,
                 status: 'PENDING',
             },
             select: {
                 id: true,
+                publicationId: true,
                 status: true,
                 createdAt: true,
             },
         });
         return {
             success: true,
-            message: 'Votre avis a été reçu et attend validation.',
+            message: 'Votre avis a ete recu et attend validation.',
             opinion,
+            publication,
         };
     }
 };

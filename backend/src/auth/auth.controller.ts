@@ -86,7 +86,10 @@ import {
     @HttpCode(HttpStatus.OK)
     @Throttle({ default: { limit: 5, ttl: 60_000 } })
     async verifyEmail(@Body() dto: VerifyEmailDto) {
-      return this.emailVerificationService.consumeToken(dto.token);
+      return this.emailVerificationService.consumeToken(
+        dto.email,
+        dto.code,
+      );
     }
   
     @Post('resend-verification')
@@ -138,9 +141,13 @@ import {
           user.email,
           token,
         );
-      } catch {
-        // Ne pas reveler l'existence du compte.
-        // Suivi et relances SMTP a ajouter.
+      } catch (error) {
+        // Diagnostic serveur uniquement : ne pas exposer
+        // les informations du compte dans la reponse HTTP.
+        console.error(
+          '[CCPD] Echec envoi verification SMTP',
+          error instanceof Error ? error.message : 'Erreur inconnue',
+        );
       }
   
       return response;

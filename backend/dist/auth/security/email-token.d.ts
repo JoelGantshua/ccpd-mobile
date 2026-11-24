@@ -1,6 +1,6 @@
-export declare function hashEmailToken(token: string): string;
-export declare function generateEmailVerificationToken(): {
-    token: string;
-    tokenHash: string;
+export declare function hashEmailCode(userId: string, code: string): string;
+export declare function generateEmailVerificationCode(userId: string): {
+    code: string;
+    codeHash: string;
     expiresAt: Date;
 };

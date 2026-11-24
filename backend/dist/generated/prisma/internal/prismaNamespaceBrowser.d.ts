@@ -17,6 +17,9 @@ export declare const ModelName: {
     readonly RefreshSession: "RefreshSession";
     readonly Opinion: "Opinion";
     readonly Publication: "Publication";
+    readonly Participation: "Participation";
+    readonly CommitteeMember: "CommitteeMember";
+    readonly Article: "Article";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -52,6 +55,7 @@ export declare const EmailVerificationTokenScalarFieldEnum: {
     readonly userId: "userId";
     readonly expiresAt: "expiresAt";
     readonly consumedAt: "consumedAt";
+    readonly attempts: "attempts";
     readonly createdAt: "createdAt";
 };
 export type EmailVerificationTokenScalarFieldEnum = (typeof EmailVerificationTokenScalarFieldEnum)[keyof typeof EmailVerificationTokenScalarFieldEnum];
@@ -66,6 +70,8 @@ export declare const RefreshSessionScalarFieldEnum: {
 };
 export type RefreshSessionScalarFieldEnum = (typeof RefreshSessionScalarFieldEnum)[keyof typeof RefreshSessionScalarFieldEnum];
 export declare const OpinionScalarFieldEnum: {
+    readonly provinceId: "provinceId";
+    readonly authorId: "authorId";
     readonly id: "id";
     readonly authorName: "authorName";
     readonly isAnonymous: "isAnonymous";
@@ -93,6 +99,46 @@ export declare const PublicationScalarFieldEnum: {
     readonly publishedAt: "publishedAt";
 };
 export type PublicationScalarFieldEnum = (typeof PublicationScalarFieldEnum)[keyof typeof PublicationScalarFieldEnum];
+export declare const ParticipationScalarFieldEnum: {
+    readonly id: "id";
+    readonly fullName: "fullName";
+    readonly email: "email";
+    readonly phone: "phone";
+    readonly motivation: "motivation";
+    readonly status: "status";
+    readonly emailVerifiedAt: "emailVerifiedAt";
+    readonly provinceId: "provinceId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type ParticipationScalarFieldEnum = (typeof ParticipationScalarFieldEnum)[keyof typeof ParticipationScalarFieldEnum];
+export declare const CommitteeMemberScalarFieldEnum: {
+    readonly id: "id";
+    readonly fullName: "fullName";
+    readonly position: "position";
+    readonly biography: "biography";
+    readonly photoKey: "photoKey";
+    readonly displayOrder: "displayOrder";
+    readonly status: "status";
+    readonly provinceId: "provinceId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly publishedAt: "publishedAt";
+};
+export type CommitteeMemberScalarFieldEnum = (typeof CommitteeMemberScalarFieldEnum)[keyof typeof CommitteeMemberScalarFieldEnum];
+export declare const ArticleScalarFieldEnum: {
+    readonly id: "id";
+    readonly title: "title";
+    readonly summary: "summary";
+    readonly content: "content";
+    readonly category: "category";
+    readonly coverImageKey: "coverImageKey";
+    readonly status: "status";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly publishedAt: "publishedAt";
+};
+export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

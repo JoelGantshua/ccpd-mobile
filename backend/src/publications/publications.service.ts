@@ -9,7 +9,7 @@ import type { PublicationType } from '../generated/prisma/client.js';
 import { CreatePublicationDto } from './dto/create-publication.dto.js';
 import { ConflictException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-import { mkdir, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
@@ -128,11 +128,13 @@ async createDraft(dto: CreatePublicationDto) {
       );
     }
   
+    const metadata = await this.adminMetadata(dto);
     const publication = await this.prisma.publication.create({
       data: {
         title,
         description,
         type: dto.type,
+        ...metadata,
         status: 'DRAFT',
       },
       select: {
@@ -143,6 +145,11 @@ async createDraft(dto: CreatePublicationDto) {
         status: true,
         createdAt: true,
       },
+    }).catch((error: unknown) => {
+      if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2002') {
+        throw new ConflictException('Version de doctrine deja existante.');
+      }
+      throw error;
     });
   
     return {
@@ -202,51 +209,14 @@ async attachPdf(id: string, file?: Express.Multer.File) {
   
     await writeFile(filePath, file.buffer, { flag: 'wx' });
   
-    let updated;
-  
-    try {
-      const result = await this.prisma.publication.updateMany({
-        where: {
-          id,
-          status: 'DRAFT',
-          storageKey: publication.storageKey,
-        },
-        data: {
-          fileName: file.originalname.slice(0, 255),
-          storageKey,
-          mimeType: 'application/pdf',
-          fileSize: file.size,
-        },
-      });
-  
-      if (result.count !== 1) {
-        throw new ConflictException(
-          'La publication a été modifiée. Veuillez réessayer.',
-        );
-      }
-  
-      updated = await this.prisma.publication.findUniqueOrThrow({
-        where: { id },
-        select: {
-          id: true,
-          title: true,
-          type: true,
-          status: true,
-          fileName: true,
-          fileSize: true,
-        },
-      });
-    } catch (error) {
-      await unlink(filePath).catch(() => undefined);
-      throw error;
-    }
-  
-    // Supprimer l'ancien fichier après la mise à jour réussie.
-    if (publication.storageKey) {
-      const previousPath = join(folder, publication.storageKey);
-      await unlink(previousPath).catch(() => undefined);
-    }
-  
+    const result = await this.prisma.publication.updateMany({
+      where: { id, status: 'DRAFT', storageKey: publication.storageKey },
+      data: { fileName: file.originalname.slice(0,255), storageKey, mimeType:'application/pdf', fileSize:file.buffer.length },
+    });
+    if (result.count !== 1) throw new ConflictException('Publication modifiee.');
+    // Keep both files: a failed or ambiguous database operation must not destroy a PDF.
+    const updated = await this.prisma.publication.findUniqueOrThrow({where:{id},select:this.adminSelect});
+
     return {
       success: true,
       message: 'PDF enregistré avec succès.',
@@ -256,10 +226,18 @@ async attachPdf(id: string, file?: Express.Multer.File) {
   
 
   async getPublishedPdf(id: string) {
+    return this.readPdf(id, true);
+  }
+
+  async getAdminPdf(id: string) {
+    return this.readPdf(id, false);
+  }
+
+  private async readPdf(id: string, publicOnly: boolean) {
     const publication = await this.prisma.publication.findFirst({
       where: {
         id,
-        status: 'PUBLISHED',
+        ...(publicOnly ? { status: 'PUBLISHED' as const } : {}),
       },
       select: {
         storageKey: true,
@@ -314,6 +292,9 @@ async publish(id: string) {
         id: true,
         status: true,
         storageKey: true,
+        type: true,
+        doctrineNumber: true,
+        doctrineVersion: true,
         mimeType: true,
         fileSize: true,
       },
@@ -329,6 +310,7 @@ async publish(id: string) {
       );
     }
   
+    if (publication.type === 'DOCTRINE' && (!publication.doctrineNumber || publication.doctrineNumber < 1 || publication.doctrineNumber > 15 || !['COURTE','INTEGRALE'].includes(publication.doctrineVersion ?? ''))) throw new BadRequestException('Metadonnees doctrine invalides.');
     const key = publication.storageKey;
   
     if (
@@ -469,7 +451,10 @@ async findPublishedDoctrines() {
   
       const doctrine = doctrines.get(number) ?? {
         number,
-        title: `Doctrine ${String(number).padStart(2, '0')}`,
+        title: `Doctrine ${String(number).padStart(2, '0')} - ${publication.title
+          .replace(/^(?:CCPD\s+)?Doctrine\s+\d+\s*[-–—:]?\s*/i, '')
+          .replace(/\s*[-–—]?\s*version\s+(?:courte|int[eé]grale)\s*$/i, '')
+          .trim()}`,
         courte: null,
         integrale: null,
       };
@@ -498,4 +483,52 @@ async findPublishedDoctrines() {
   }
   
   
+
+  private readonly adminSelect = {
+    id:true,title:true,description:true,type:true,status:true,doctrineNumber:true,doctrineVersion:true,
+    fileName:true,fileSize:true,createdAt:true,updatedAt:true,publishedAt:true,
+  } as const;
+
+  private async adminMetadata(dto: CreatePublicationDto, id?: string) {
+    if (dto.type === 'DOCUMENT') {
+      if (dto.doctrineNumber != null || dto.doctrineVersion != null) throw new BadRequestException('Metadonnees doctrine interdites pour un document.');
+      return {doctrineNumber:null,doctrineVersion:null};
+    }
+    if (!Number.isInteger(dto.doctrineNumber) || dto.doctrineNumber! < 1 || dto.doctrineNumber! > 15 || !['COURTE','INTEGRALE'].includes(dto.doctrineVersion ?? '')) throw new BadRequestException('Numero et version obligatoires.');
+    if (!id) return {doctrineNumber:dto.doctrineNumber!,doctrineVersion:dto.doctrineVersion!};
+    const existing = await this.prisma.publication.findUnique({where:{id}});
+    if (!existing || existing.doctrineNumber !== dto.doctrineNumber || existing.doctrineVersion !== dto.doctrineVersion) throw new ConflictException('Identite de doctrine non modifiable.');
+    return {doctrineNumber:dto.doctrineNumber!,doctrineVersion:dto.doctrineVersion!};
+  }
+  async adminList(type: string, pageInput?: string) {
+    if (type !== 'DOCUMENT' && type !== 'DOCTRINE') throw new BadRequestException('Type invalide.');
+    if (pageInput !== undefined && (typeof pageInput !== 'string' || !/^[1-9]\d{0,4}$/.test(pageInput))) throw new BadRequestException('Page invalide.');
+    const page = Number(pageInput ?? 1), pageSize=50;
+    const where = {type: type as PublicationType};
+    const [items,total] = await Promise.all([
+      this.prisma.publication.findMany({where,select:this.adminSelect,skip:(page-1)*pageSize,take:pageSize,orderBy:[{doctrineNumber:'asc'},{doctrineVersion:'asc'},{updatedAt:'desc'},{id:'asc'}]}),
+      this.prisma.publication.count({where}),
+    ]);
+    return {success:true,items,pagination:{page,pageSize,total,totalPages:Math.ceil(total/pageSize)}};
+  }
+  async adminDetail(id: string) {
+    const publication = await this.prisma.publication.findUnique({where:{id},select:this.adminSelect});
+    if (!publication) throw new NotFoundException('Publication introuvable.');
+    return {success:true,publication};
+  }
+  async adminUpdate(id: string,dto: CreatePublicationDto) {
+    const {publication} = await this.adminDetail(id);
+    if (publication.type !== dto.type) throw new ConflictException('Type non modifiable.');
+    const title = dto.title.trim();
+    if (title.length < 3) throw new BadRequestException('Titre invalide.');
+    const metadata = await this.adminMetadata(dto,id);
+    const result = await this.prisma.publication.updateMany({where:{id,status:'DRAFT',updatedAt:publication.updatedAt},data:{title,description:dto.description?.trim() || null,...metadata}});
+    if (result.count !== 1) throw new ConflictException('Brouillon requis ou publication modifiee.');
+    return this.adminDetail(id);
+  }
+  async adminStatus(id: string,status:'DRAFT'|'ARCHIVED') {
+    const result = await this.prisma.publication.updateMany({where:{id,status:{in:status==='DRAFT'?['PUBLISHED','ARCHIVED']:['DRAFT','PUBLISHED']}},data:{status,...(status==='DRAFT'?{publishedAt:null}:{})}});
+    if (result.count !== 1) throw new ConflictException('Transition impossible.');
+    return this.adminDetail(id);
+  }
 }

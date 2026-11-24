@@ -17,4 +17,13 @@ export const PublicationStatus = {
     PUBLISHED: 'PUBLISHED',
     ARCHIVED: 'ARCHIVED'
 };
+export const ParticipationStatus = {
+    PENDING: 'PENDING',
+    APPROVED: 'APPROVED',
+    REJECTED: 'REJECTED'
+};
+export const ArticleCategory = {
+    POLITIQUE: 'POLITIQUE',
+    ECONOMIE: 'ECONOMIE'
+};
 //# sourceMappingURL=enums.js.map

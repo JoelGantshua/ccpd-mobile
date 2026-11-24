@@ -89,6 +89,9 @@ export type ProvinceWhereInput = {
     createdAt?: Prisma.DateTimeFilter<"Province"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Province"> | Date | string;
     users?: Prisma.UserListRelationFilter;
+    participations?: Prisma.ParticipationListRelationFilter;
+    opinions?: Prisma.OpinionListRelationFilter;
+    committeeMembers?: Prisma.CommitteeMemberListRelationFilter;
 };
 export type ProvinceOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -96,6 +99,9 @@ export type ProvinceOrderByWithRelationInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     users?: Prisma.UserOrderByRelationAggregateInput;
+    participations?: Prisma.ParticipationOrderByRelationAggregateInput;
+    opinions?: Prisma.OpinionOrderByRelationAggregateInput;
+    committeeMembers?: Prisma.CommitteeMemberOrderByRelationAggregateInput;
 };
 export type ProvinceWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -106,6 +112,9 @@ export type ProvinceWhereUniqueInput = Prisma.AtLeast<{
     createdAt?: Prisma.DateTimeFilter<"Province"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Province"> | Date | string;
     users?: Prisma.UserListRelationFilter;
+    participations?: Prisma.ParticipationListRelationFilter;
+    opinions?: Prisma.OpinionListRelationFilter;
+    committeeMembers?: Prisma.CommitteeMemberListRelationFilter;
 }, "id" | "name">;
 export type ProvinceOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -131,6 +140,9 @@ export type ProvinceCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     users?: Prisma.UserCreateNestedManyWithoutProvinceInput;
+    participations?: Prisma.ParticipationCreateNestedManyWithoutProvinceInput;
+    opinions?: Prisma.OpinionCreateNestedManyWithoutProvinceInput;
+    committeeMembers?: Prisma.CommitteeMemberCreateNestedManyWithoutProvinceInput;
 };
 export type ProvinceUncheckedCreateInput = {
     id?: string;
@@ -138,6 +150,9 @@ export type ProvinceUncheckedCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     users?: Prisma.UserUncheckedCreateNestedManyWithoutProvinceInput;
+    participations?: Prisma.ParticipationUncheckedCreateNestedManyWithoutProvinceInput;
+    opinions?: Prisma.OpinionUncheckedCreateNestedManyWithoutProvinceInput;
+    committeeMembers?: Prisma.CommitteeMemberUncheckedCreateNestedManyWithoutProvinceInput;
 };
 export type ProvinceUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -145,6 +160,9 @@ export type ProvinceUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     users?: Prisma.UserUpdateManyWithoutProvinceNestedInput;
+    participations?: Prisma.ParticipationUpdateManyWithoutProvinceNestedInput;
+    opinions?: Prisma.OpinionUpdateManyWithoutProvinceNestedInput;
+    committeeMembers?: Prisma.CommitteeMemberUpdateManyWithoutProvinceNestedInput;
 };
 export type ProvinceUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -152,6 +170,9 @@ export type ProvinceUncheckedUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     users?: Prisma.UserUncheckedUpdateManyWithoutProvinceNestedInput;
+    participations?: Prisma.ParticipationUncheckedUpdateManyWithoutProvinceNestedInput;
+    opinions?: Prisma.OpinionUncheckedUpdateManyWithoutProvinceNestedInput;
+    committeeMembers?: Prisma.CommitteeMemberUncheckedUpdateManyWithoutProvinceNestedInput;
 };
 export type ProvinceCreateManyInput = {
     id?: string;
@@ -193,6 +214,10 @@ export type ProvinceNullableScalarRelationFilter = {
     is?: Prisma.ProvinceWhereInput | null;
     isNot?: Prisma.ProvinceWhereInput | null;
 };
+export type ProvinceScalarRelationFilter = {
+    is?: Prisma.ProvinceWhereInput;
+    isNot?: Prisma.ProvinceWhereInput;
+};
 export type StringFieldUpdateOperationsInput = {
     set?: string;
 };
@@ -213,17 +238,63 @@ export type ProvinceUpdateOneWithoutUsersNestedInput = {
     connect?: Prisma.ProvinceWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProvinceUpdateToOneWithWhereWithoutUsersInput, Prisma.ProvinceUpdateWithoutUsersInput>, Prisma.ProvinceUncheckedUpdateWithoutUsersInput>;
 };
+export type ProvinceCreateNestedOneWithoutOpinionsInput = {
+    create?: Prisma.XOR<Prisma.ProvinceCreateWithoutOpinionsInput, Prisma.ProvinceUncheckedCreateWithoutOpinionsInput>;
+    connectOrCreate?: Prisma.ProvinceCreateOrConnectWithoutOpinionsInput;
+    connect?: Prisma.ProvinceWhereUniqueInput;
+};
+export type ProvinceUpdateOneWithoutOpinionsNestedInput = {
+    create?: Prisma.XOR<Prisma.ProvinceCreateWithoutOpinionsInput, Prisma.ProvinceUncheckedCreateWithoutOpinionsInput>;
+    connectOrCreate?: Prisma.ProvinceCreateOrConnectWithoutOpinionsInput;
+    upsert?: Prisma.ProvinceUpsertWithoutOpinionsInput;
+    disconnect?: Prisma.ProvinceWhereInput | boolean;
+    delete?: Prisma.ProvinceWhereInput | boolean;
+    connect?: Prisma.ProvinceWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProvinceUpdateToOneWithWhereWithoutOpinionsInput, Prisma.ProvinceUpdateWithoutOpinionsInput>, Prisma.ProvinceUncheckedUpdateWithoutOpinionsInput>;
+};
+export type ProvinceCreateNestedOneWithoutParticipationsInput = {
+    create?: Prisma.XOR<Prisma.ProvinceCreateWithoutParticipationsInput, Prisma.ProvinceUncheckedCreateWithoutParticipationsInput>;
+    connectOrCreate?: Prisma.ProvinceCreateOrConnectWithoutParticipationsInput;
+    connect?: Prisma.ProvinceWhereUniqueInput;
+};
+export type ProvinceUpdateOneRequiredWithoutParticipationsNestedInput = {
+    create?: Prisma.XOR<Prisma.ProvinceCreateWithoutParticipationsInput, Prisma.ProvinceUncheckedCreateWithoutParticipationsInput>;
+    connectOrCreate?: Prisma.ProvinceCreateOrConnectWithoutParticipationsInput;
+    upsert?: Prisma.ProvinceUpsertWithoutParticipationsInput;
+    connect?: Prisma.ProvinceWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProvinceUpdateToOneWithWhereWithoutParticipationsInput, Prisma.ProvinceUpdateWithoutParticipationsInput>, Prisma.ProvinceUncheckedUpdateWithoutParticipationsInput>;
+};
+export type ProvinceCreateNestedOneWithoutCommitteeMembersInput = {
+    create?: Prisma.XOR<Prisma.ProvinceCreateWithoutCommitteeMembersInput, Prisma.ProvinceUncheckedCreateWithoutCommitteeMembersInput>;
+    connectOrCreate?: Prisma.ProvinceCreateOrConnectWithoutCommitteeMembersInput;
+    connect?: Prisma.ProvinceWhereUniqueInput;
+};
+export type ProvinceUpdateOneWithoutCommitteeMembersNestedInput = {
+    create?: Prisma.XOR<Prisma.ProvinceCreateWithoutCommitteeMembersInput, Prisma.ProvinceUncheckedCreateWithoutCommitteeMembersInput>;
+    connectOrCreate?: Prisma.ProvinceCreateOrConnectWithoutCommitteeMembersInput;
+    upsert?: Prisma.ProvinceUpsertWithoutCommitteeMembersInput;
+    disconnect?: Prisma.ProvinceWhereInput | boolean;
+    delete?: Prisma.ProvinceWhereInput | boolean;
+    connect?: Prisma.ProvinceWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProvinceUpdateToOneWithWhereWithoutCommitteeMembersInput, Prisma.ProvinceUpdateWithoutCommitteeMembersInput>, Prisma.ProvinceUncheckedUpdateWithoutCommitteeMembersInput>;
+};
 export type ProvinceCreateWithoutUsersInput = {
     id?: string;
     name: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    participations?: Prisma.ParticipationCreateNestedManyWithoutProvinceInput;
+    opinions?: Prisma.OpinionCreateNestedManyWithoutProvinceInput;
+    committeeMembers?: Prisma.CommitteeMemberCreateNestedManyWithoutProvinceInput;
 };
 export type ProvinceUncheckedCreateWithoutUsersInput = {
     id?: string;
     name: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    participations?: Prisma.ParticipationUncheckedCreateNestedManyWithoutProvinceInput;
+    opinions?: Prisma.OpinionUncheckedCreateNestedManyWithoutProvinceInput;
+    committeeMembers?: Prisma.CommitteeMemberUncheckedCreateNestedManyWithoutProvinceInput;
 };
 export type ProvinceCreateOrConnectWithoutUsersInput = {
     where: Prisma.ProvinceWhereUniqueInput;
@@ -243,18 +314,177 @@ export type ProvinceUpdateWithoutUsersInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    participations?: Prisma.ParticipationUpdateManyWithoutProvinceNestedInput;
+    opinions?: Prisma.OpinionUpdateManyWithoutProvinceNestedInput;
+    committeeMembers?: Prisma.CommitteeMemberUpdateManyWithoutProvinceNestedInput;
 };
 export type ProvinceUncheckedUpdateWithoutUsersInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    participations?: Prisma.ParticipationUncheckedUpdateManyWithoutProvinceNestedInput;
+    opinions?: Prisma.OpinionUncheckedUpdateManyWithoutProvinceNestedInput;
+    committeeMembers?: Prisma.CommitteeMemberUncheckedUpdateManyWithoutProvinceNestedInput;
+};
+export type ProvinceCreateWithoutOpinionsInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserCreateNestedManyWithoutProvinceInput;
+    participations?: Prisma.ParticipationCreateNestedManyWithoutProvinceInput;
+    committeeMembers?: Prisma.CommitteeMemberCreateNestedManyWithoutProvinceInput;
+};
+export type ProvinceUncheckedCreateWithoutOpinionsInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserUncheckedCreateNestedManyWithoutProvinceInput;
+    participations?: Prisma.ParticipationUncheckedCreateNestedManyWithoutProvinceInput;
+    committeeMembers?: Prisma.CommitteeMemberUncheckedCreateNestedManyWithoutProvinceInput;
+};
+export type ProvinceCreateOrConnectWithoutOpinionsInput = {
+    where: Prisma.ProvinceWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProvinceCreateWithoutOpinionsInput, Prisma.ProvinceUncheckedCreateWithoutOpinionsInput>;
+};
+export type ProvinceUpsertWithoutOpinionsInput = {
+    update: Prisma.XOR<Prisma.ProvinceUpdateWithoutOpinionsInput, Prisma.ProvinceUncheckedUpdateWithoutOpinionsInput>;
+    create: Prisma.XOR<Prisma.ProvinceCreateWithoutOpinionsInput, Prisma.ProvinceUncheckedCreateWithoutOpinionsInput>;
+    where?: Prisma.ProvinceWhereInput;
+};
+export type ProvinceUpdateToOneWithWhereWithoutOpinionsInput = {
+    where?: Prisma.ProvinceWhereInput;
+    data: Prisma.XOR<Prisma.ProvinceUpdateWithoutOpinionsInput, Prisma.ProvinceUncheckedUpdateWithoutOpinionsInput>;
+};
+export type ProvinceUpdateWithoutOpinionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUpdateManyWithoutProvinceNestedInput;
+    participations?: Prisma.ParticipationUpdateManyWithoutProvinceNestedInput;
+    committeeMembers?: Prisma.CommitteeMemberUpdateManyWithoutProvinceNestedInput;
+};
+export type ProvinceUncheckedUpdateWithoutOpinionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUncheckedUpdateManyWithoutProvinceNestedInput;
+    participations?: Prisma.ParticipationUncheckedUpdateManyWithoutProvinceNestedInput;
+    committeeMembers?: Prisma.CommitteeMemberUncheckedUpdateManyWithoutProvinceNestedInput;
+};
+export type ProvinceCreateWithoutParticipationsInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserCreateNestedManyWithoutProvinceInput;
+    opinions?: Prisma.OpinionCreateNestedManyWithoutProvinceInput;
+    committeeMembers?: Prisma.CommitteeMemberCreateNestedManyWithoutProvinceInput;
+};
+export type ProvinceUncheckedCreateWithoutParticipationsInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserUncheckedCreateNestedManyWithoutProvinceInput;
+    opinions?: Prisma.OpinionUncheckedCreateNestedManyWithoutProvinceInput;
+    committeeMembers?: Prisma.CommitteeMemberUncheckedCreateNestedManyWithoutProvinceInput;
+};
+export type ProvinceCreateOrConnectWithoutParticipationsInput = {
+    where: Prisma.ProvinceWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProvinceCreateWithoutParticipationsInput, Prisma.ProvinceUncheckedCreateWithoutParticipationsInput>;
+};
+export type ProvinceUpsertWithoutParticipationsInput = {
+    update: Prisma.XOR<Prisma.ProvinceUpdateWithoutParticipationsInput, Prisma.ProvinceUncheckedUpdateWithoutParticipationsInput>;
+    create: Prisma.XOR<Prisma.ProvinceCreateWithoutParticipationsInput, Prisma.ProvinceUncheckedCreateWithoutParticipationsInput>;
+    where?: Prisma.ProvinceWhereInput;
+};
+export type ProvinceUpdateToOneWithWhereWithoutParticipationsInput = {
+    where?: Prisma.ProvinceWhereInput;
+    data: Prisma.XOR<Prisma.ProvinceUpdateWithoutParticipationsInput, Prisma.ProvinceUncheckedUpdateWithoutParticipationsInput>;
+};
+export type ProvinceUpdateWithoutParticipationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUpdateManyWithoutProvinceNestedInput;
+    opinions?: Prisma.OpinionUpdateManyWithoutProvinceNestedInput;
+    committeeMembers?: Prisma.CommitteeMemberUpdateManyWithoutProvinceNestedInput;
+};
+export type ProvinceUncheckedUpdateWithoutParticipationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUncheckedUpdateManyWithoutProvinceNestedInput;
+    opinions?: Prisma.OpinionUncheckedUpdateManyWithoutProvinceNestedInput;
+    committeeMembers?: Prisma.CommitteeMemberUncheckedUpdateManyWithoutProvinceNestedInput;
+};
+export type ProvinceCreateWithoutCommitteeMembersInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserCreateNestedManyWithoutProvinceInput;
+    participations?: Prisma.ParticipationCreateNestedManyWithoutProvinceInput;
+    opinions?: Prisma.OpinionCreateNestedManyWithoutProvinceInput;
+};
+export type ProvinceUncheckedCreateWithoutCommitteeMembersInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserUncheckedCreateNestedManyWithoutProvinceInput;
+    participations?: Prisma.ParticipationUncheckedCreateNestedManyWithoutProvinceInput;
+    opinions?: Prisma.OpinionUncheckedCreateNestedManyWithoutProvinceInput;
+};
+export type ProvinceCreateOrConnectWithoutCommitteeMembersInput = {
+    where: Prisma.ProvinceWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProvinceCreateWithoutCommitteeMembersInput, Prisma.ProvinceUncheckedCreateWithoutCommitteeMembersInput>;
+};
+export type ProvinceUpsertWithoutCommitteeMembersInput = {
+    update: Prisma.XOR<Prisma.ProvinceUpdateWithoutCommitteeMembersInput, Prisma.ProvinceUncheckedUpdateWithoutCommitteeMembersInput>;
+    create: Prisma.XOR<Prisma.ProvinceCreateWithoutCommitteeMembersInput, Prisma.ProvinceUncheckedCreateWithoutCommitteeMembersInput>;
+    where?: Prisma.ProvinceWhereInput;
+};
+export type ProvinceUpdateToOneWithWhereWithoutCommitteeMembersInput = {
+    where?: Prisma.ProvinceWhereInput;
+    data: Prisma.XOR<Prisma.ProvinceUpdateWithoutCommitteeMembersInput, Prisma.ProvinceUncheckedUpdateWithoutCommitteeMembersInput>;
+};
+export type ProvinceUpdateWithoutCommitteeMembersInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUpdateManyWithoutProvinceNestedInput;
+    participations?: Prisma.ParticipationUpdateManyWithoutProvinceNestedInput;
+    opinions?: Prisma.OpinionUpdateManyWithoutProvinceNestedInput;
+};
+export type ProvinceUncheckedUpdateWithoutCommitteeMembersInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUncheckedUpdateManyWithoutProvinceNestedInput;
+    participations?: Prisma.ParticipationUncheckedUpdateManyWithoutProvinceNestedInput;
+    opinions?: Prisma.OpinionUncheckedUpdateManyWithoutProvinceNestedInput;
 };
 export type ProvinceCountOutputType = {
     users: number;
+    participations: number;
+    opinions: number;
+    committeeMembers: number;
 };
 export type ProvinceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     users?: boolean | ProvinceCountOutputTypeCountUsersArgs;
+    participations?: boolean | ProvinceCountOutputTypeCountParticipationsArgs;
+    opinions?: boolean | ProvinceCountOutputTypeCountOpinionsArgs;
+    committeeMembers?: boolean | ProvinceCountOutputTypeCountCommitteeMembersArgs;
 };
 export type ProvinceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ProvinceCountOutputTypeSelect<ExtArgs> | null;
@@ -262,12 +492,24 @@ export type ProvinceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
 export type ProvinceCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.UserWhereInput;
 };
+export type ProvinceCountOutputTypeCountParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ParticipationWhereInput;
+};
+export type ProvinceCountOutputTypeCountOpinionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.OpinionWhereInput;
+};
+export type ProvinceCountOutputTypeCountCommitteeMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.CommitteeMemberWhereInput;
+};
 export type ProvinceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     name?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     users?: boolean | Prisma.Province$usersArgs<ExtArgs>;
+    participations?: boolean | Prisma.Province$participationsArgs<ExtArgs>;
+    opinions?: boolean | Prisma.Province$opinionsArgs<ExtArgs>;
+    committeeMembers?: boolean | Prisma.Province$committeeMembersArgs<ExtArgs>;
     _count?: boolean | Prisma.ProvinceCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["province"]>;
 export type ProvinceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -291,6 +533,9 @@ export type ProvinceSelectScalar = {
 export type ProvinceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["province"]>;
 export type ProvinceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     users?: boolean | Prisma.Province$usersArgs<ExtArgs>;
+    participations?: boolean | Prisma.Province$participationsArgs<ExtArgs>;
+    opinions?: boolean | Prisma.Province$opinionsArgs<ExtArgs>;
+    committeeMembers?: boolean | Prisma.Province$committeeMembersArgs<ExtArgs>;
     _count?: boolean | Prisma.ProvinceCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ProvinceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -299,6 +544,9 @@ export type $ProvincePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     name: "Province";
     objects: {
         users: Prisma.$UserPayload<ExtArgs>[];
+        participations: Prisma.$ParticipationPayload<ExtArgs>[];
+        opinions: Prisma.$OpinionPayload<ExtArgs>[];
+        committeeMembers: Prisma.$CommitteeMemberPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -358,6 +606,9 @@ export interface ProvinceDelegate<ExtArgs extends runtime.Types.Extensions.Inter
 export interface Prisma__ProvinceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     users<T extends Prisma.Province$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Province$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    participations<T extends Prisma.Province$participationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Province$participationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ParticipationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    opinions<T extends Prisma.Province$opinionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Province$opinionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpinionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    committeeMembers<T extends Prisma.Province$committeeMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Province$committeeMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommitteeMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -476,6 +727,39 @@ export type Province$usersArgs<ExtArgs extends runtime.Types.Extensions.Internal
     take?: number;
     skip?: number;
     distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[];
+};
+export type Province$participationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ParticipationSelect<ExtArgs> | null;
+    omit?: Prisma.ParticipationOmit<ExtArgs> | null;
+    include?: Prisma.ParticipationInclude<ExtArgs> | null;
+    where?: Prisma.ParticipationWhereInput;
+    orderBy?: Prisma.ParticipationOrderByWithRelationInput | Prisma.ParticipationOrderByWithRelationInput[];
+    cursor?: Prisma.ParticipationWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ParticipationScalarFieldEnum | Prisma.ParticipationScalarFieldEnum[];
+};
+export type Province$opinionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.OpinionSelect<ExtArgs> | null;
+    omit?: Prisma.OpinionOmit<ExtArgs> | null;
+    include?: Prisma.OpinionInclude<ExtArgs> | null;
+    where?: Prisma.OpinionWhereInput;
+    orderBy?: Prisma.OpinionOrderByWithRelationInput | Prisma.OpinionOrderByWithRelationInput[];
+    cursor?: Prisma.OpinionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.OpinionScalarFieldEnum | Prisma.OpinionScalarFieldEnum[];
+};
+export type Province$committeeMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.CommitteeMemberSelect<ExtArgs> | null;
+    omit?: Prisma.CommitteeMemberOmit<ExtArgs> | null;
+    include?: Prisma.CommitteeMemberInclude<ExtArgs> | null;
+    where?: Prisma.CommitteeMemberWhereInput;
+    orderBy?: Prisma.CommitteeMemberOrderByWithRelationInput | Prisma.CommitteeMemberOrderByWithRelationInput[];
+    cursor?: Prisma.CommitteeMemberWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.CommitteeMemberScalarFieldEnum | Prisma.CommitteeMemberScalarFieldEnum[];
 };
 export type ProvinceDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ProvinceSelect<ExtArgs> | null;

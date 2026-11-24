@@ -1,5 +1,5 @@
 export declare class CreateAvisDto {
+    publicationId: string;
     isAnonymous: boolean;
-    authorName?: string;
     content: string;
 }

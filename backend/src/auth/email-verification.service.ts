@@ -1,6 +1,4 @@
-
-import { randomUUID } from 'node:crypto';
-
+﻿import { randomUUID } from 'node:crypto';
 import {
   BadRequestException,
   HttpException,
@@ -9,70 +7,41 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-
 import { PrismaService } from '../prisma/prisma.service.js';
-
 import {
-  generateEmailVerificationToken,
-  hashEmailToken,
+  generateEmailVerificationCode,
+  hashEmailCode,
 } from './security/email-token.js';
 
 @Injectable()
 export class EmailVerificationService {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  /**
-   * Génération sécurisée d'un jeton de vérification.
-   *
-   * Un seul jeton par utilisateur.
-   * Délai minimal de 5 minutes entre deux émissions.
-   * Ancien jeton remplacé après ce délai.
-   *
-   * Le jeton brut est réservé à un usage interne.
-   */
   async issueToken(userId: string) {
     const user = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      select: {
-        id: true,
-        emailVerifiedAt: true,
-      },
+      where: { id: userId },
+      select: { id: true, emailVerifiedAt: true },
     });
 
     if (!user) {
-      throw new NotFoundException(
-        'Utilisateur introuvable',
-      );
+      throw new NotFoundException('Utilisateur introuvable');
     }
 
     if (user.emailVerifiedAt) {
-      throw new BadRequestException(
-        'Adresse e-mail déjà vérifiée',
-      );
+      throw new BadRequestException('Adresse deja verifiee');
     }
 
-    const generated = generateEmailVerificationToken();
+    const generated = generateEmailVerificationCode(userId);
 
-    const result = await this.prisma.$queryRaw<
-      Array<{ id: string }>
-    >`
+    const result = await this.prisma.$queryRaw<Array<{ id: string }>>`
       INSERT INTO "EmailVerificationToken" AS existing (
-        "id",
-        "userId",
-        "tokenHash",
-        "expiresAt",
-        "createdAt"
+        "id", "userId", "tokenHash", "expiresAt",
+        "createdAt", "attempts"
       )
       SELECT
-        ${randomUUID()},
-        u."id",
-        ${generated.tokenHash},
-        ${generated.expiresAt},
-        CURRENT_TIMESTAMP
+        ${randomUUID()}, u."id",
+        ${generated.codeHash}, ${generated.expiresAt},
+        CURRENT_TIMESTAMP, 0
       FROM "User" AS u
       WHERE u."id" = ${userId}
         AND u."emailVerifiedAt" IS NULL
@@ -82,8 +51,8 @@ export class EmailVerificationService {
         "tokenHash" = EXCLUDED."tokenHash",
         "expiresAt" = EXCLUDED."expiresAt",
         "consumedAt" = NULL,
-        "createdAt" = CURRENT_TIMESTAMP
-
+        "createdAt" = CURRENT_TIMESTAMP,
+        "attempts" = 0
       WHERE existing."createdAt"
         <= CURRENT_TIMESTAMP - INTERVAL '5 minutes'
 
@@ -92,89 +61,91 @@ export class EmailVerificationService {
 
     if (result.length !== 1) {
       throw new HttpException(
-        'Nouvelle demande temporairement indisponible',
+        'Veuillez patienter avant de demander un nouveau code',
         HttpStatus.TOO_MANY_REQUESTS,
       );
     }
 
     return {
-      token: generated.token,
+      token: generated.code,
       expiresAt: generated.expiresAt,
     };
   }
 
-  /**
-   * Consommation d'un jeton.
-   *
-   * Vérifie :
-   * - le format du jeton ;
-   * - sa validité ;
-   * - son expiration ;
-   * - son utilisation précédente ;
-   * - l'état de vérification de l'utilisateur.
-   *
-   * La vérification de l'e-mail
-   * n'active pas automatiquement le compte.
-   */
   async consumeToken(
-    token: string,
+    email: string,
+    code: string,
   ): Promise<{ verified: true }> {
-    if (
-      typeof token !== 'string' ||
-      !/^[a-f0-9]{64}$/.test(token)
-    ) {
-      throw new BadRequestException(
-        'Jeton invalide',
-      );
+    if (!/^\d{6}$/.test(code)) {
+      throw new BadRequestException('Code invalide');
     }
 
-    const tokenHash = hashEmailToken(token);
+    const normalizedEmail = email.trim().toLowerCase();
 
-    const result = await this.prisma.$queryRaw<
-      Array<{ id: string }>
-    >`
-      WITH consumed AS (
-        UPDATE "EmailVerificationToken" AS t
+    const result = await this.prisma.$transaction(async (tx) => {
+      const users = await tx.$queryRaw<
+        Array<{ id: string }>
+      >`
+        SELECT "id"::text AS id
+        FROM "User"
+        WHERE LOWER("email") = ${normalizedEmail}
+          AND "emailVerifiedAt" IS NULL
+      `;
 
+      if (users.length !== 1) return false;
+
+      const userId = users[0].id;
+      const codeHash = hashEmailCode(userId, code);
+
+      const rows = await tx.$queryRaw<
+        Array<{ matched: boolean }>
+      >`
+        UPDATE "EmailVerificationToken"
+        SET "attempts" = "attempts" + 1
+        WHERE "userId" = ${userId}
+          AND "consumedAt" IS NULL
+          AND "expiresAt" > CURRENT_TIMESTAMP
+          AND "attempts" < 5
+        RETURNING ("tokenHash" = ${codeHash}) AS matched
+      `;
+
+      if (rows.length !== 1 || !rows[0].matched) {
+        return false;
+      }
+
+      const consumed = await tx.$queryRaw<
+        Array<{ userId: string }>
+      >`
+        UPDATE "EmailVerificationToken"
+        SET "consumedAt" = CURRENT_TIMESTAMP
+        WHERE "userId" = ${userId}
+          AND "consumedAt" IS NULL
+        RETURNING "userId"
+      `;
+
+      if (consumed.length !== 1) return false;
+
+      const verified = await tx.$queryRaw<
+        Array<{ id: string }>
+      >`
+        UPDATE "User"
         SET
-          "consumedAt" = CURRENT_TIMESTAMP
+          "emailVerifiedAt" = CURRENT_TIMESTAMP,
+          "updatedAt" = CURRENT_TIMESTAMP
+        WHERE "id" = ${userId}
+          AND "emailVerifiedAt" IS NULL
+        RETURNING "id"::text AS id
+      `;
 
-        WHERE t."tokenHash" = ${tokenHash}
-          AND t."consumedAt" IS NULL
-          AND t."expiresAt" > CURRENT_TIMESTAMP
+      return verified.length === 1;
+    });
 
-          AND EXISTS (
-            SELECT 1
-            FROM "User" AS u
-            WHERE u."id" = t."userId"
-              AND u."emailVerifiedAt" IS NULL
-          )
-
-        RETURNING t."userId"
-      )
-
-      UPDATE "User" AS u
-
-      SET
-        "emailVerifiedAt" = CURRENT_TIMESTAMP,
-        "updatedAt" = CURRENT_TIMESTAMP
-
-      FROM consumed
-
-      WHERE u."id" = consumed."userId"
-        AND u."emailVerifiedAt" IS NULL
-
-      RETURNING u."id"::text AS id
-    `;
-
-    if (result.length !== 1) {
+    if (!result) {
       throw new UnauthorizedException(
-        'Jeton invalide, expiré ou déjà utilisé',
+        'Code incorrect, expire ou nombre de tentatives depasse',
       );
     }
 
-    return {
-      verified: true,
-    };
+    return { verified: true };
   }
 }

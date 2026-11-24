@@ -14,30 +14,15 @@ let VerificationMailService = class VerificationMailService {
             'SMTP_USER',
             'SMTP_PASSWORD',
             'SMTP_FROM',
-            'APP_VERIFY_URL',
         ].every((key) => Boolean(process.env[key]?.trim()));
     }
-    async sendVerificationEmail(recipient, token) {
-        if (!this.isConfigured()) {
-            throw new ServiceUnavailableException('Service de verification e-mail non configure');
+    async sendVerificationEmail(recipient, code) {
+        if (!this.isConfigured() || !/^\d{6}$/.test(code)) {
+            throw new ServiceUnavailableException('Service de verification indisponible');
         }
         const port = Number(process.env.SMTP_PORT);
-        const rawUrl = process.env.APP_VERIFY_URL;
-        if (!Number.isInteger(port) ||
-            port < 1 ||
-            port > 65535) {
+        if (!Number.isInteger(port) || port < 1 || port > 65535) {
             throw new ServiceUnavailableException('Configuration SMTP invalide');
-        }
-        let verificationUrl;
-        try {
-            verificationUrl = new URL(rawUrl);
-            if (verificationUrl.protocol !== 'https:') {
-                throw new Error('HTTPS requis');
-            }
-            verificationUrl.searchParams.set('token', token);
-        }
-        catch {
-            throw new ServiceUnavailableException('URL de verification invalide');
         }
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
@@ -49,20 +34,22 @@ let VerificationMailService = class VerificationMailService {
                 pass: process.env.SMTP_PASSWORD,
             },
         });
-        const link = verificationUrl.toString();
         try {
             await transporter.sendMail({
                 from: process.env.SMTP_FROM,
                 to: recipient,
-                subject: 'CCPD Bloc Est RDC - Verification de votre e-mail',
+                subject: 'CCPD Mobile - Code de verification',
                 text: [
                     'Bienvenue sur CCPD Mobile.',
                     '',
-                    'Pour verifier votre adresse e-mail,',
-                    'ouvrez le lien suivant :',
-                    link,
+                    `Votre code de verification est : ${code}`,
                     '',
-                    'Ce lien expire apres 30 minutes.',
+                    'Ce code expire apres 10 minutes.',
+                    'Ne communiquez ce code a personne.',
+                    '',
+                    'Apres verification, votre compte devra',
+                    'etre approuve par un administrateur.',
+                    '',
                     'Si vous n avez pas cree de compte,',
                     'ignorez cet e-mail.',
                 ].join('\n'),

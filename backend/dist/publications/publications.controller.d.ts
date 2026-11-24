@@ -7,9 +7,9 @@ export declare class PublicationsController {
         success: boolean;
         items: {
             id: string;
-            type: import("../generated/prisma/enums.js").PublicationType;
             title: string;
             description: string | null;
+            type: import("../generated/prisma/enums.js").PublicationType;
             publishedAt: Date | null;
         }[];
         pagination: {
@@ -39,9 +39,9 @@ export declare class PublicationsController {
         success: boolean;
         publication: {
             id: string;
-            type: import("../generated/prisma/enums.js").PublicationType;
             title: string;
             description: string | null;
+            type: import("../generated/prisma/enums.js").PublicationType;
             publishedAt: Date | null;
         };
     }>;

@@ -48,5 +48,14 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get publication(): Prisma.PublicationDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get participation(): Prisma.ParticipationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get committeeMember(): Prisma.CommitteeMemberDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get article(): Prisma.ArticleDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

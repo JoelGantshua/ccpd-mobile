@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ccpd-navy: #0A2545;
+  --color-ccpd-gold: #D7BC8C;
+  --color-ccpd-background: #F5F7FA;
+}
+
+:root {
+  font-family: Inter, Arial, sans-serif;
+  color: #0A2545;
+  background: #F5F7FA;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

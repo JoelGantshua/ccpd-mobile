@@ -10,8 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Body, Controller, HttpCode, HttpStatus, Post, UsePipes, ValidationPipe, } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards, UsePipes, ValidationPipe, } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
+import { JwtAccessGuard } from '../auth/jwt-access.guard.js';
 import { AvisService } from './avis.service.js';
 import { CreateAvisDto } from './dto/create-avis.dto.js';
 let AvisController = class AvisController {
@@ -19,12 +20,13 @@ let AvisController = class AvisController {
     constructor(avisService) {
         this.avisService = avisService;
     }
-    create(dto) {
-        return this.avisService.create(dto);
+    create(dto, request) {
+        return this.avisService.create(dto, request.user);
     }
 };
 __decorate([
     Post(),
+    UseGuards(JwtAccessGuard),
     HttpCode(HttpStatus.CREATED),
     Throttle({
         default: {
@@ -38,8 +40,9 @@ __decorate([
         transform: true,
     })),
     __param(0, Body()),
+    __param(1, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateAvisDto]),
+    __metadata("design:paramtypes", [CreateAvisDto, Object]),
     __metadata("design:returntype", void 0)
 ], AvisController.prototype, "create", null);
 AvisController = __decorate([

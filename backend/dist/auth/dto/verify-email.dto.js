@@ -7,13 +7,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsString, Matches } from 'class-validator';
+import { IsEmail, IsString, Matches, MaxLength, } from 'class-validator';
 export class VerifyEmailDto {
-    token;
+    email;
+    code;
 }
 __decorate([
     IsString(),
-    Matches(/^[a-f0-9]{64}$/),
+    IsEmail(),
+    MaxLength(254),
     __metadata("design:type", String)
-], VerifyEmailDto.prototype, "token", void 0);
+], VerifyEmailDto.prototype, "email", void 0);
+__decorate([
+    IsString(),
+    Matches(/^\d{6}$/),
+    __metadata("design:type", String)
+], VerifyEmailDto.prototype, "code", void 0);
 //# sourceMappingURL=verify-email.dto.js.map

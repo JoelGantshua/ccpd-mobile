@@ -1,5 +1,8 @@
-﻿import {
+import {
   IsIn,
+  IsInt,
+  Min,
+  Max,
   IsOptional,
   IsString,
   MaxLength,
@@ -19,4 +22,14 @@ export class CreatePublicationDto {
 
   @IsIn(['DOCUMENT', 'DOCTRINE'])
   type!: 'DOCUMENT' | 'DOCTRINE';
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(15)
+  doctrineNumber?: number;
+
+  @IsOptional()
+  @IsIn(['COURTE', 'INTEGRALE'])
+  doctrineVersion?: 'COURTE' | 'INTEGRALE';
 }

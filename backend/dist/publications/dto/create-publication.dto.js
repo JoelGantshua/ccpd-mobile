@@ -7,11 +7,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsIn, IsOptional, IsString, MaxLength, MinLength, } from 'class-validator';
+import { IsIn, IsInt, Min, Max, IsOptional, IsString, MaxLength, MinLength, } from 'class-validator';
 export class CreatePublicationDto {
     title;
     description;
     type;
+    doctrineNumber;
+    doctrineVersion;
 }
 __decorate([
     IsString(),
@@ -29,4 +31,16 @@ __decorate([
     IsIn(['DOCUMENT', 'DOCTRINE']),
     __metadata("design:type", String)
 ], CreatePublicationDto.prototype, "type", void 0);
+__decorate([
+    IsOptional(),
+    IsInt(),
+    Min(1),
+    Max(15),
+    __metadata("design:type", Number)
+], CreatePublicationDto.prototype, "doctrineNumber", void 0);
+__decorate([
+    IsOptional(),
+    IsIn(['COURTE', 'INTEGRALE']),
+    __metadata("design:type", String)
+], CreatePublicationDto.prototype, "doctrineVersion", void 0);
 //# sourceMappingURL=create-publication.dto.js.map

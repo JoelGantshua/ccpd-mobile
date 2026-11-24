@@ -214,6 +214,7 @@ export type PublicationOrderByWithRelationInput = {
 };
 export type PublicationWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
+    doctrineNumber_doctrineVersion?: Prisma.PublicationDoctrineNumberDoctrineVersionCompoundUniqueInput;
     AND?: Prisma.PublicationWhereInput | Prisma.PublicationWhereInput[];
     OR?: Prisma.PublicationWhereInput[];
     NOT?: Prisma.PublicationWhereInput | Prisma.PublicationWhereInput[];
@@ -231,7 +232,7 @@ export type PublicationWhereUniqueInput = Prisma.AtLeast<{
     updatedAt?: Prisma.DateTimeFilter<"Publication"> | Date | string;
     publishedAt?: Prisma.DateTimeNullableFilter<"Publication"> | Date | string | null;
     opinions?: Prisma.OpinionListRelationFilter;
-}, "id">;
+}, "id" | "doctrineNumber_doctrineVersion">;
 export type PublicationOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     title?: Prisma.SortOrder;
@@ -391,6 +392,10 @@ export type PublicationUncheckedUpdateManyInput = {
 export type PublicationNullableScalarRelationFilter = {
     is?: Prisma.PublicationWhereInput | null;
     isNot?: Prisma.PublicationWhereInput | null;
+};
+export type PublicationDoctrineNumberDoctrineVersionCompoundUniqueInput = {
+    doctrineNumber: number;
+    doctrineVersion: string;
 };
 export type PublicationCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;

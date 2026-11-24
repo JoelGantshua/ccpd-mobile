@@ -5,13 +5,13 @@ export declare class UsersService {
     findForAuthentication(email: string): Promise<{
         id: string;
         createdAt: Date;
-        updatedAt: Date;
         email: string;
         fullName: string;
         passwordHash: string;
         role: import("../generated/prisma/enums.js").UserRole;
         isActive: boolean;
         provinceId: string | null;
+        updatedAt: Date;
         emailVerifiedAt: Date | null;
     } | null>;
     findPublicProfile(id: string): Promise<{

@@ -14,7 +14,10 @@ export const ModelName = {
     EmailVerificationToken: 'EmailVerificationToken',
     RefreshSession: 'RefreshSession',
     Opinion: 'Opinion',
-    Publication: 'Publication'
+    Publication: 'Publication',
+    Participation: 'Participation',
+    CommitteeMember: 'CommitteeMember',
+    Article: 'Article'
 };
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -46,6 +49,7 @@ export const EmailVerificationTokenScalarFieldEnum = {
     userId: 'userId',
     expiresAt: 'expiresAt',
     consumedAt: 'consumedAt',
+    attempts: 'attempts',
     createdAt: 'createdAt'
 };
 export const RefreshSessionScalarFieldEnum = {
@@ -58,6 +62,8 @@ export const RefreshSessionScalarFieldEnum = {
     createdAt: 'createdAt'
 };
 export const OpinionScalarFieldEnum = {
+    provinceId: 'provinceId',
+    authorId: 'authorId',
     id: 'id',
     authorName: 'authorName',
     isAnonymous: 'isAnonymous',
@@ -79,6 +85,43 @@ export const PublicationScalarFieldEnum = {
     storageKey: 'storageKey',
     mimeType: 'mimeType',
     fileSize: 'fileSize',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    publishedAt: 'publishedAt'
+};
+export const ParticipationScalarFieldEnum = {
+    id: 'id',
+    fullName: 'fullName',
+    email: 'email',
+    phone: 'phone',
+    motivation: 'motivation',
+    status: 'status',
+    emailVerifiedAt: 'emailVerifiedAt',
+    provinceId: 'provinceId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const CommitteeMemberScalarFieldEnum = {
+    id: 'id',
+    fullName: 'fullName',
+    position: 'position',
+    biography: 'biography',
+    photoKey: 'photoKey',
+    displayOrder: 'displayOrder',
+    status: 'status',
+    provinceId: 'provinceId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    publishedAt: 'publishedAt'
+};
+export const ArticleScalarFieldEnum = {
+    id: 'id',
+    title: 'title',
+    summary: 'summary',
+    content: 'content',
+    category: 'category',
+    coverImageKey: 'coverImageKey',
+    status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     publishedAt: 'publishedAt'

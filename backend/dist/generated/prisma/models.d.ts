@@ -4,4 +4,7 @@ export type * from './models/EmailVerificationToken.js';
 export type * from './models/RefreshSession.js';
 export type * from './models/Opinion.js';
 export type * from './models/Publication.js';
+export type * from './models/Participation.js';
+export type * from './models/CommitteeMember.js';
+export type * from './models/Article.js';
 export type * from './commonInputTypes.js';

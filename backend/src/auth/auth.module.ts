@@ -1,12 +1,18 @@
 
 import { Module } from '@nestjs/common';
+import { AdminReportsController } from './admin-reports.controller.js';
+import { AdminReportsService } from './admin-reports.service.js';
+import { AdminInstitutionController } from './admin-institution.controller.js';
+import { AdminInstitutionService } from './admin-institution.service.js';
 import { JwtModule } from '@nestjs/jwt';
 
 import { AuthController } from './auth.controller.js';
+import { VerificationPageController } from './verification-page.controller.js';
 import { AuthService } from './auth.service.js';
 import { LoginService } from './login.service.js';
 import { SessionService } from './session.service.js';
 import { JwtAccessGuard } from './jwt-access.guard.js';
+import { AdminGuard } from './admin.guard.js';
 
 import { UsersModule } from '../users/users.module.js';
 
@@ -52,19 +58,28 @@ import { AdminPublicationsController } from './admin-publications.controller.js'
   ],
   controllers: [
     AuthController,
+    VerificationPageController,
     AdminMembersController,
     ProvincialMembersController,
     AdminPublicationsController,
+    AdminInstitutionController,
+    AdminReportsController,
   ],
   providers: [
     AuthService,
     LoginService,
     SessionService,
     JwtAccessGuard,
+    AdminGuard,
     EmailVerificationService,
     VerificationMailService,
     AdminMembersService,
+    AdminInstitutionService,
+    AdminReportsService,
     ProvincialMembersService,
   ],
+
+  exports: [JwtAccessGuard, JwtModule],
 })
 export class AuthModule {}
+

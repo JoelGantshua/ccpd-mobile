@@ -140,6 +140,7 @@ export type UserWhereInput = {
     province?: Prisma.XOR<Prisma.ProvinceNullableScalarRelationFilter, Prisma.ProvinceWhereInput> | null;
     verificationTokens?: Prisma.EmailVerificationTokenListRelationFilter;
     sessions?: Prisma.RefreshSessionListRelationFilter;
+    opinions?: Prisma.OpinionListRelationFilter;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -155,6 +156,7 @@ export type UserOrderByWithRelationInput = {
     province?: Prisma.ProvinceOrderByWithRelationInput;
     verificationTokens?: Prisma.EmailVerificationTokenOrderByRelationAggregateInput;
     sessions?: Prisma.RefreshSessionOrderByRelationAggregateInput;
+    opinions?: Prisma.OpinionOrderByRelationAggregateInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -173,6 +175,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     province?: Prisma.XOR<Prisma.ProvinceNullableScalarRelationFilter, Prisma.ProvinceWhereInput> | null;
     verificationTokens?: Prisma.EmailVerificationTokenListRelationFilter;
     sessions?: Prisma.RefreshSessionListRelationFilter;
+    opinions?: Prisma.OpinionListRelationFilter;
 }, "id" | "email">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -217,6 +220,7 @@ export type UserCreateInput = {
     province?: Prisma.ProvinceCreateNestedOneWithoutUsersInput;
     verificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput;
     sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput;
+    opinions?: Prisma.OpinionCreateNestedManyWithoutAuthorInput;
 };
 export type UserUncheckedCreateInput = {
     id?: string;
@@ -231,6 +235,7 @@ export type UserUncheckedCreateInput = {
     emailVerifiedAt?: Date | string | null;
     verificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput;
     sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput;
+    opinions?: Prisma.OpinionUncheckedCreateNestedManyWithoutAuthorInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -245,6 +250,7 @@ export type UserUpdateInput = {
     province?: Prisma.ProvinceUpdateOneWithoutUsersNestedInput;
     verificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput;
     sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput;
+    opinions?: Prisma.OpinionUpdateManyWithoutAuthorNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -259,6 +265,7 @@ export type UserUncheckedUpdateInput = {
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     verificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput;
     sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput;
+    opinions?: Prisma.OpinionUncheckedUpdateManyWithoutAuthorNestedInput;
 };
 export type UserCreateManyInput = {
     id?: string;
@@ -343,6 +350,10 @@ export type UserScalarRelationFilter = {
     is?: Prisma.UserWhereInput;
     isNot?: Prisma.UserWhereInput;
 };
+export type UserNullableScalarRelationFilter = {
+    is?: Prisma.UserWhereInput | null;
+    isNot?: Prisma.UserWhereInput | null;
+};
 export type UserCreateNestedManyWithoutProvinceInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutProvinceInput, Prisma.UserUncheckedCreateWithoutProvinceInput> | Prisma.UserCreateWithoutProvinceInput[] | Prisma.UserUncheckedCreateWithoutProvinceInput[];
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutProvinceInput | Prisma.UserCreateOrConnectWithoutProvinceInput[];
@@ -417,6 +428,20 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>;
 };
+export type UserCreateNestedOneWithoutOpinionsInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutOpinionsInput, Prisma.UserUncheckedCreateWithoutOpinionsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutOpinionsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneWithoutOpinionsNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutOpinionsInput, Prisma.UserUncheckedCreateWithoutOpinionsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutOpinionsInput;
+    upsert?: Prisma.UserUpsertWithoutOpinionsInput;
+    disconnect?: Prisma.UserWhereInput | boolean;
+    delete?: Prisma.UserWhereInput | boolean;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOpinionsInput, Prisma.UserUpdateWithoutOpinionsInput>, Prisma.UserUncheckedUpdateWithoutOpinionsInput>;
+};
 export type UserCreateWithoutProvinceInput = {
     id?: string;
     fullName: string;
@@ -429,6 +454,7 @@ export type UserCreateWithoutProvinceInput = {
     emailVerifiedAt?: Date | string | null;
     verificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput;
     sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput;
+    opinions?: Prisma.OpinionCreateNestedManyWithoutAuthorInput;
 };
 export type UserUncheckedCreateWithoutProvinceInput = {
     id?: string;
@@ -442,6 +468,7 @@ export type UserUncheckedCreateWithoutProvinceInput = {
     emailVerifiedAt?: Date | string | null;
     verificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput;
     sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput;
+    opinions?: Prisma.OpinionUncheckedCreateNestedManyWithoutAuthorInput;
 };
 export type UserCreateOrConnectWithoutProvinceInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -491,6 +518,7 @@ export type UserCreateWithoutVerificationTokensInput = {
     emailVerifiedAt?: Date | string | null;
     province?: Prisma.ProvinceCreateNestedOneWithoutUsersInput;
     sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput;
+    opinions?: Prisma.OpinionCreateNestedManyWithoutAuthorInput;
 };
 export type UserUncheckedCreateWithoutVerificationTokensInput = {
     id?: string;
@@ -504,6 +532,7 @@ export type UserUncheckedCreateWithoutVerificationTokensInput = {
     updatedAt?: Date | string;
     emailVerifiedAt?: Date | string | null;
     sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput;
+    opinions?: Prisma.OpinionUncheckedCreateNestedManyWithoutAuthorInput;
 };
 export type UserCreateOrConnectWithoutVerificationTokensInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -530,6 +559,7 @@ export type UserUpdateWithoutVerificationTokensInput = {
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     province?: Prisma.ProvinceUpdateOneWithoutUsersNestedInput;
     sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput;
+    opinions?: Prisma.OpinionUpdateManyWithoutAuthorNestedInput;
 };
 export type UserUncheckedUpdateWithoutVerificationTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -543,6 +573,7 @@ export type UserUncheckedUpdateWithoutVerificationTokensInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput;
+    opinions?: Prisma.OpinionUncheckedUpdateManyWithoutAuthorNestedInput;
 };
 export type UserCreateWithoutSessionsInput = {
     id?: string;
@@ -556,6 +587,7 @@ export type UserCreateWithoutSessionsInput = {
     emailVerifiedAt?: Date | string | null;
     province?: Prisma.ProvinceCreateNestedOneWithoutUsersInput;
     verificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput;
+    opinions?: Prisma.OpinionCreateNestedManyWithoutAuthorInput;
 };
 export type UserUncheckedCreateWithoutSessionsInput = {
     id?: string;
@@ -569,6 +601,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
     updatedAt?: Date | string;
     emailVerifiedAt?: Date | string | null;
     verificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput;
+    opinions?: Prisma.OpinionUncheckedCreateNestedManyWithoutAuthorInput;
 };
 export type UserCreateOrConnectWithoutSessionsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -595,6 +628,7 @@ export type UserUpdateWithoutSessionsInput = {
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     province?: Prisma.ProvinceUpdateOneWithoutUsersNestedInput;
     verificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput;
+    opinions?: Prisma.OpinionUpdateManyWithoutAuthorNestedInput;
 };
 export type UserUncheckedUpdateWithoutSessionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -608,6 +642,76 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     verificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput;
+    opinions?: Prisma.OpinionUncheckedUpdateManyWithoutAuthorNestedInput;
+};
+export type UserCreateWithoutOpinionsInput = {
+    id?: string;
+    fullName: string;
+    email: string;
+    passwordHash: string;
+    role?: $Enums.UserRole;
+    isActive?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    emailVerifiedAt?: Date | string | null;
+    province?: Prisma.ProvinceCreateNestedOneWithoutUsersInput;
+    verificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutOpinionsInput = {
+    id?: string;
+    fullName: string;
+    email: string;
+    passwordHash: string;
+    role?: $Enums.UserRole;
+    isActive?: boolean;
+    provinceId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    emailVerifiedAt?: Date | string | null;
+    verificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutOpinionsInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutOpinionsInput, Prisma.UserUncheckedCreateWithoutOpinionsInput>;
+};
+export type UserUpsertWithoutOpinionsInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutOpinionsInput, Prisma.UserUncheckedUpdateWithoutOpinionsInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutOpinionsInput, Prisma.UserUncheckedCreateWithoutOpinionsInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutOpinionsInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutOpinionsInput, Prisma.UserUncheckedUpdateWithoutOpinionsInput>;
+};
+export type UserUpdateWithoutOpinionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    fullName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.StringFieldUpdateOperationsInput | string;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    province?: Prisma.ProvinceUpdateOneWithoutUsersNestedInput;
+    verificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutOpinionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    fullName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.StringFieldUpdateOperationsInput | string;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    provinceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    verificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateManyProvinceInput = {
     id?: string;
@@ -632,6 +736,7 @@ export type UserUpdateWithoutProvinceInput = {
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     verificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput;
     sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput;
+    opinions?: Prisma.OpinionUpdateManyWithoutAuthorNestedInput;
 };
 export type UserUncheckedUpdateWithoutProvinceInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -645,6 +750,7 @@ export type UserUncheckedUpdateWithoutProvinceInput = {
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     verificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput;
     sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput;
+    opinions?: Prisma.OpinionUncheckedUpdateManyWithoutAuthorNestedInput;
 };
 export type UserUncheckedUpdateManyWithoutProvinceInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -660,10 +766,12 @@ export type UserUncheckedUpdateManyWithoutProvinceInput = {
 export type UserCountOutputType = {
     verificationTokens: number;
     sessions: number;
+    opinions: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     verificationTokens?: boolean | UserCountOutputTypeCountVerificationTokensArgs;
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs;
+    opinions?: boolean | UserCountOutputTypeCountOpinionsArgs;
 };
 export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null;
@@ -673,6 +781,9 @@ export type UserCountOutputTypeCountVerificationTokensArgs<ExtArgs extends runti
 };
 export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.RefreshSessionWhereInput;
+};
+export type UserCountOutputTypeCountOpinionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.OpinionWhereInput;
 };
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -688,6 +799,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     province?: boolean | Prisma.User$provinceArgs<ExtArgs>;
     verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>;
     sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
+    opinions?: boolean | Prisma.User$opinionsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -733,6 +845,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     province?: boolean | Prisma.User$provinceArgs<ExtArgs>;
     verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>;
     sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
+    opinions?: boolean | Prisma.User$opinionsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -747,6 +860,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         province: Prisma.$ProvincePayload<ExtArgs> | null;
         verificationTokens: Prisma.$EmailVerificationTokenPayload<ExtArgs>[];
         sessions: Prisma.$RefreshSessionPayload<ExtArgs>[];
+        opinions: Prisma.$OpinionPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -814,6 +928,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     province<T extends Prisma.User$provinceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$provinceArgs<ExtArgs>>): Prisma.Prisma__ProvinceClient<runtime.Types.Result.GetResult<Prisma.$ProvincePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     verificationTokens<T extends Prisma.User$verificationTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailVerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    opinions<T extends Prisma.User$opinionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$opinionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpinionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -957,6 +1072,17 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
     take?: number;
     skip?: number;
     distinct?: Prisma.RefreshSessionScalarFieldEnum | Prisma.RefreshSessionScalarFieldEnum[];
+};
+export type User$opinionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.OpinionSelect<ExtArgs> | null;
+    omit?: Prisma.OpinionOmit<ExtArgs> | null;
+    include?: Prisma.OpinionInclude<ExtArgs> | null;
+    where?: Prisma.OpinionWhereInput;
+    orderBy?: Prisma.OpinionOrderByWithRelationInput | Prisma.OpinionOrderByWithRelationInput[];
+    cursor?: Prisma.OpinionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.OpinionScalarFieldEnum | Prisma.OpinionScalarFieldEnum[];
 };
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserSelect<ExtArgs> | null;

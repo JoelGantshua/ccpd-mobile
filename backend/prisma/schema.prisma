@@ -13,11 +13,14 @@ datasource db {
 }
 
 model Province {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User[]
+  id               String            @id @default(uuid())
+  name             String            @unique
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  users            User[]
+  participations   Participation[]
+  opinions         Opinion[]
+  committeeMembers CommitteeMember[]
 }
 
 enum UserRole {
@@ -42,6 +45,7 @@ model User {
   emailVerifiedAt    DateTime?
   verificationTokens EmailVerificationToken[]
   sessions           RefreshSession[]
+  opinions           Opinion[]
 }
 
 model EmailVerificationToken {
@@ -51,6 +55,7 @@ model EmailVerificationToken {
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt  DateTime
   consumedAt DateTime?
+  attempts   Int       @default(0)
   createdAt  DateTime  @default(now())
 
   @@index([expiresAt])
@@ -78,6 +83,12 @@ enum OpinionStatus {
 }
 
 model Opinion {
+  provinceId String?
+  province   Province? @relation(fields: [provinceId], references: [id], onDelete: Restrict)
+
+  authorId String?
+  author   User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
   id            String        @id @default(uuid())
   authorName    String?
   isAnonymous   Boolean       @default(false)
@@ -88,6 +99,8 @@ model Opinion {
   publicationId String?
   publication   Publication?  @relation(fields: [publicationId], references: [id], onDelete: Restrict)
 
+  @@index([provinceId, createdAt])
+  @@index([authorId])
   @@index([status, createdAt])
 }
 
@@ -109,9 +122,8 @@ model Publication {
   type        PublicationType
   status      PublicationStatus @default(DRAFT)
 
-doctrineNumber  Int?
-doctrineVersion String?
-
+  doctrineNumber  Int?
+  doctrineVersion String?
 
   fileName   String?
   storageKey String?
@@ -125,5 +137,72 @@ doctrineVersion String?
   opinions Opinion[]
 
   @@index([type, status, publishedAt])
-@@index([doctrineNumber, doctrineVersion])
+  @@unique([doctrineNumber, doctrineVersion])
+}
+
+enum ParticipationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Participation {
+  id              String              @id @default(uuid())
+  fullName        String
+  email           String
+  phone           String?
+  motivation      String
+  status          ParticipationStatus @default(PENDING)
+  emailVerifiedAt DateTime?
+
+  provinceId String
+  province   Province @relation(fields: [provinceId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([provinceId, createdAt])
+  @@index([email])
+}
+
+enum ArticleCategory {
+  POLITIQUE
+  ECONOMIE
+}
+
+model CommitteeMember {
+  id           String            @id @default(uuid())
+  fullName     String
+  position     String
+  biography    String?
+  photoKey     String?
+  displayOrder Int               @default(0)
+  status       PublicationStatus @default(DRAFT)
+
+  provinceId String?
+  province   Province? @relation(fields: [provinceId], references: [id], onDelete: Restrict)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+
+  @@index([status, displayOrder])
+  @@index([provinceId])
+}
+
+model Article {
+  id            String            @id @default(uuid())
+  title         String
+  summary       String
+  content       String
+  category      ArticleCategory
+  coverImageKey String?
+  status        PublicationStatus @default(DRAFT)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+
+  @@index([category, status, publishedAt])
 }

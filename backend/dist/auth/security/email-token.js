@@ -1,16 +1,22 @@
-import { createHash, randomBytes } from 'node:crypto';
-const TOKEN_TTL_MINUTES = 30;
-export function hashEmailToken(token) {
-    return createHash('sha256')
-        .update(token, 'utf8')
+import { createHmac, randomInt } from 'node:crypto';
+const CODE_TTL_MINUTES = 10;
+export function hashEmailCode(userId, code) {
+    const secret = process.env.EMAIL_CODE_SECRET;
+    if (!secret || secret.length < 32) {
+        throw new Error('EMAIL_CODE_SECRET non configure');
+    }
+    return createHmac('sha256', secret)
+        .update(`${userId}:${code}`, 'utf8')
         .digest('hex');
 }
-export function generateEmailVerificationToken() {
-    const token = randomBytes(32).toString('hex');
+export function generateEmailVerificationCode(userId) {
+    const code = randomInt(0, 1_000_000)
+        .toString()
+        .padStart(6, '0');
     return {
-        token,
-        tokenHash: hashEmailToken(token),
-        expiresAt: new Date(Date.now() + TOKEN_TTL_MINUTES * 60 * 1000),
+        code,
+        codeHash: hashEmailCode(userId, code),
+        expiresAt: new Date(Date.now() + CODE_TTL_MINUTES * 60_000),
     };
 }
 //# sourceMappingURL=email-token.js.map

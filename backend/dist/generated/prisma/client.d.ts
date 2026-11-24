@@ -12,3 +12,6 @@ export type EmailVerificationToken = Prisma.EmailVerificationTokenModel;
 export type RefreshSession = Prisma.RefreshSessionModel;
 export type Opinion = Prisma.OpinionModel;
 export type Publication = Prisma.PublicationModel;
+export type Participation = Prisma.ParticipationModel;
+export type CommitteeMember = Prisma.CommitteeMemberModel;
+export type Article = Prisma.ArticleModel;

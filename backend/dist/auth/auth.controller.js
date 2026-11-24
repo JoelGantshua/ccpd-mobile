@@ -58,7 +58,7 @@ let AuthController = class AuthController {
         };
     }
     async verifyEmail(dto) {
-        return this.emailVerificationService.consumeToken(dto.token);
+        return this.emailVerificationService.consumeToken(dto.email, dto.code);
     }
     async resendVerification(dto) {
         if (!this.verificationMailService.isConfigured()) {
@@ -86,7 +86,8 @@ let AuthController = class AuthController {
         try {
             await this.verificationMailService.sendVerificationEmail(user.email, token);
         }
-        catch {
+        catch (error) {
+            console.error('[CCPD] Echec envoi verification SMTP', error instanceof Error ? error.message : 'Erreur inconnue');
         }
         return response;
     }

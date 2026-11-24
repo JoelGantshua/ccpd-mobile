@@ -6,7 +6,7 @@ export declare class EmailVerificationService {
         token: string;
         expiresAt: Date;
     }>;
-    consumeToken(token: string): Promise<{
+    consumeToken(email: string, code: string): Promise<{
         verified: true;
     }>;
 }
